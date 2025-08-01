@@ -369,6 +369,24 @@ st.markdown("""
         cursor: pointer !important;
     }
     
+    /* Prevent text cursor and ensure pointer cursor everywhere */
+    .css-1d391kg .stSelectbox * {
+        cursor: pointer !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+    }
+    
+    /* Override any text cursor that might appear */
+    .css-1d391kg .stSelectbox > div > div > div > div > div > div:hover {
+        cursor: pointer !important;
+    }
+    
+    .css-1d391kg .stSelectbox > div > div > div > div > div > div:active {
+        cursor: pointer !important;
+    }
+    
     /* Improve dropdown trigger area */
     .css-1d391kg .stSelectbox > div > div > div > div > div:first-child {
         pointer-events: auto !important;
@@ -376,6 +394,25 @@ st.markdown("""
         min-height: 40px !important;
         display: flex !important;
         align-items: center !important;
+    }
+    
+    /* Prevent text selection and ensure pointer cursor */
+    .css-1d391kg .stSelectbox > div > div > div > div > div:first-child * {
+        cursor: pointer !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        pointer-events: auto !important;
+    }
+    
+    /* Override any text cursor on the main dropdown */
+    .css-1d391kg .stSelectbox > div > div > div > div > div:first-child:hover {
+        cursor: pointer !important;
+    }
+    
+    .css-1d391kg .stSelectbox > div > div > div > div > div:first-child:active {
+        cursor: pointer !important;
     }
     
     /* Make dropdown more responsive */
