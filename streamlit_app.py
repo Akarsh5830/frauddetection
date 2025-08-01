@@ -474,9 +474,9 @@ elif page == "🔍 Manual Prediction":
                     df_input['job'] = le_job.transform(df_input['job'])
                     df_input['merchant'] = le_merchant.transform(df_input['merchant'])
                     
-                                         # Use only the specified features for prediction
-                     required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
-                     df_input = df_input[required_features]
+                    # Use only the specified features for prediction
+                    required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+                    df_input = df_input[required_features]
                     
                     # Make prediction
                     with st.spinner("🔄 Analyzing transaction..."):
@@ -626,9 +626,9 @@ elif page == "📊 Batch Analysis":
                 df['job'] = le_job.transform(df['job'])
                 df['merchant'] = le_merchant.transform(df['merchant'])
                 
-                                 # Use only the specified features for prediction
-                 required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
-                 X_input = df[required_features]
+                # Use only the specified features for prediction
+                required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+                X_input = df[required_features]
                 
                 # Make predictions
                 probs = model.predict_proba(X_input)[:,1]
@@ -762,22 +762,22 @@ elif page == "⚙️ Settings":
     </div>
     """, unsafe_allow_html=True)
     
-         # Use only the specified features for prediction
-     feature_descriptions = {
-         'merchant': 'Merchant name',
-         'category': 'Transaction category',
-         'amt': 'Transaction amount',
-         'gender': 'Customer gender',
-         'lat': 'Customer latitude',
-         'long': 'Customer longitude',
-         'city_pop': 'City population',
-         'job': 'Customer job title',
-         'unix_time': 'Transaction timestamp',
-         'merch_lat': 'Merchant latitude',
-         'merch_long': 'Merchant longitude'
-     }
-     
-     required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+    # Use only the specified features for prediction
+    feature_descriptions = {
+        'merchant': 'Merchant name',
+        'category': 'Transaction category',
+        'amt': 'Transaction amount',
+        'gender': 'Customer gender',
+        'lat': 'Customer latitude',
+        'long': 'Customer longitude',
+        'city_pop': 'City population',
+        'job': 'Customer job title',
+        'unix_time': 'Transaction timestamp',
+        'merch_lat': 'Merchant latitude',
+        'merch_long': 'Merchant longitude'
+    }
+    
+    required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
     
     feature_df = pd.DataFrame([
         {'Feature': feat, 'Description': feature_descriptions.get(feat, 'N/A')}
