@@ -349,11 +349,11 @@ elif page == "🔍 Manual Prediction":
             )
             
             # Merchant
-             merchant = st.text_input(
-                 "Merchant Name",
-                 placeholder="e.g., fraud_Rippin, Kub and Mann",
-                 help="Enter the merchant name (e.g., fraud_Rippin)"
-             )
+            merchant = st.text_input(
+                "Merchant Name",
+                placeholder="e.g., fraud_Rippin, Kub and Mann",
+                help="Enter the merchant name (e.g., fraud_Rippin)"
+            )
             
             # Unix time
             unix_time = st.number_input(
