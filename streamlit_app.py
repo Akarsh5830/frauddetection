@@ -1,7 +1,6 @@
 import streamlit as st
 import joblib
 import json
-import numpy as np
 import pandas as pd
 
 # ✅ Load model & encoders (cached)
@@ -18,13 +17,60 @@ def load_all():
 
 model, le_cat, le_gender, le_job, le_merchant, feature_names = load_all()
 
-st.title("💳 Credit Card Fraud Detection App")
+# ✅ Custom CSS
 st.markdown("""
-Model built  using LightGBM on balanced data (SMOTE).
-""")
+    <style>
+    body {
+        background-color: #f7f9fb;
+        color: #333333;
+        font-family: 'Segoe UI', sans-serif;
+    }
+    .title {
+        text-align: center;
+        font-size: 42px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    .subtitle {
+        text-align: center;
+        font-size: 18px;
+        color: #7f8c8d;
+        margin-bottom: 40px;
+    }
+    .card {
+        background-color: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+    .predict-btn {
+        background-color: #2980b9;
+        color: white;
+        padding: 12px 25px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .predict-btn:hover {
+        background-color: #1c5f8a;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# ✅ Show code→label mappings to user in expander
+# ✅ Title & subtitle
+st.markdown('<div class="title">💳 Credit Card Fraud Detection App</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Model built using LightGBM on balanced data (SMOTE)</div>', unsafe_allow_html=True)
+
+# ✅ Expander for mappings
 with st.expander("ℹ️ See label mappings"):
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.write("**Category mapping:**")
     st.json(dict(zip(le_cat.classes_, le_cat.transform(le_cat.classes_).tolist())))
     st.write("**Gender mapping:**")
@@ -33,10 +79,12 @@ with st.expander("ℹ️ See label mappings"):
     st.json(dict(zip(le_job.classes_, le_job.transform(le_job.classes_).tolist())))
     st.write("**Merchant mapping:**")
     st.json(dict(zip(le_merchant.classes_, le_merchant.transform(le_merchant.classes_).tolist())))
+    st.markdown('</div>', unsafe_allow_html=True)
 
+# ✅ Input form inside card
+st.markdown('<div class="card">', unsafe_allow_html=True)
 st.subheader("📝 Input transaction details:")
 
-# ✅ Instead of numbers, show dropdowns with real text, then encode
 category_input = st.selectbox("Category", le_cat.classes_)
 gender_input = st.selectbox("Gender", le_gender.classes_)
 job_input = st.selectbox("Job", le_job.classes_)
@@ -47,15 +95,19 @@ city_pop = st.number_input("City Population", min_value=0)
 unix_time = st.number_input("Transaction Unix Time", min_value=0)
 merch_lat = st.number_input("Merchant Latitude", format="%.6f")
 merch_long = st.number_input("Merchant Longitude", format="%.6f")
+st.markdown('</div>', unsafe_allow_html=True)
 
-# ✅ Encode text inputs
-category_enc = le_cat.transform([category_input])[0]
-gender_enc = le_gender.transform([gender_input])[0]
-job_enc = le_job.transform([job_input])[0]
-merchant_enc = le_merchant.transform([merchant_input])[0]
+# ✅ Prediction button styled
+predict_clicked = st.button("🔍 Predict Fraud", key="predict", help="Click to predict if the transaction is fraud")
 
-if st.button("🔍 Predict Fraud"):
-    # Build input vector in same order as feature_names
+if predict_clicked:
+    # Encode text inputs
+    category_enc = le_cat.transform([category_input])[0]
+    gender_enc = le_gender.transform([gender_input])[0]
+    job_enc = le_job.transform([job_input])[0]
+    merchant_enc = le_merchant.transform([merchant_input])[0]
+
+    # Build input data
     data = pd.DataFrame([[
         amt, city_pop, unix_time, merch_lat, merch_long,
         category_enc, gender_enc, job_enc, merchant_enc
@@ -64,7 +116,7 @@ if st.button("🔍 Predict Fraud"):
         'category', 'gender', 'job', 'merchant'
     ])
 
-    # Adjust column order to match training (feature_names)
+    # Adjust column order
     data = data.reindex(columns=feature_names)
 
     pred = model.predict(data)[0]
@@ -74,6 +126,5 @@ if st.button("🔍 Predict Fraud"):
     else:
         st.success("✅ Transaction looks **legit / not fraud**.")
 
-
-
-st.caption("Built by Akarsh Yadav 🚀")
+# ✅ Footer
+st.markdown('<div class="subtitle">Built by Akarsh Yadav 🚀</div>', unsafe_allow_html=True)
