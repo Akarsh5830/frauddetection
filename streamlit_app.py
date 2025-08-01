@@ -171,28 +171,60 @@ st.markdown("""
     
     /* Sidebar styling */
     .css-1d391kg {
-        background: linear-gradient(180deg, #1a252f 0%, #2c3e50 100%);
+        background: linear-gradient(180deg, #0f1419 0%, #1a252f 100%);
     }
     
     /* Improve sidebar text visibility */
     .css-1d391kg .stSelectbox > div > div > div {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white !important;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
     }
     
     .css-1d391kg .stSelectbox > div > div > div:hover {
-        background-color: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 255, 255, 0.3);
+        background-color: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.5);
     }
     
     .css-1d391kg .stSelectbox > div > div > div > div {
-        color: white;
+        color: white !important;
+        font-weight: 600;
+    }
+    
+    .css-1d391kg .stSelectbox > div > div > div > div > div {
+        color: white !important;
+        font-weight: 600;
     }
     
     .css-1d391kg .stExpander > div > div {
-        background-color: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+    }
+    
+    /* Fix dropdown options visibility */
+    .css-1d391kg .stSelectbox > div > div > div > div > div > div {
+        background-color: #2c3e50 !important;
+        color: white !important;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .css-1d391kg .stSelectbox > div > div > div > div > div > div:hover {
+        background-color: #34495e !important;
+    }
+    
+    /* Improve sidebar text contrast */
+    .css-1d391kg p, .css-1d391kg h1, .css-1d391kg h2, .css-1d391kg h3, .css-1d391kg h4 {
+        color: white !important;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    
+    /* Fix sidebar label visibility */
+    .css-1d391kg label {
+        color: white !important;
+        font-weight: 600;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     }
     
     /* Dataframe styling */
@@ -317,48 +349,48 @@ st.sidebar.markdown("---")
 
 # Quick stats in sidebar
 st.sidebar.markdown("""
-<div style="background: rgba(255,255,255,0.15); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.2);">
-    <h4 style="color: white; margin-bottom: 0.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">📊 Quick Stats</h4>
-    <p style="color: rgba(255,255,255,0.95); margin: 0.2rem 0; font-size: 0.9rem; font-weight: 500;">🎯 Model Accuracy: 99.0%</p>
-    <p style="color: rgba(255,255,255,0.95); margin: 0.2rem 0; font-size: 0.9rem; font-weight: 500;">⚡ Processing Speed: 0.2s</p>
-    <p style="color: rgba(255,255,255,0.95); margin: 0.2rem 0; font-size: 0.9rem; font-weight: 500;">🔍 Features: 13</p>
+<div style="background: rgba(255,255,255,0.25); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+    <h4 style="color: white; margin-bottom: 0.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-weight: 700;">📊 Quick Stats</h4>
+    <p style="color: white; margin: 0.2rem 0; font-size: 0.9rem; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">🎯 Model Accuracy: 99.0%</p>
+    <p style="color: white; margin: 0.2rem 0; font-size: 0.9rem; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">⚡ Processing Speed: 0.2s</p>
+    <p style="color: white; margin: 0.2rem 0; font-size: 0.9rem; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">🔍 Features: 13</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Model status indicator
 st.sidebar.markdown("""
-<div style="background: rgba(76, 175, 80, 0.25); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border-left: 4px solid #4CAF50; border: 1px solid rgba(255,255,255,0.2);">
-    <h4 style="color: white; margin-bottom: 0.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">🟢 Model Status</h4>
-    <p style="color: rgba(255,255,255,0.95); margin: 0; font-size: 0.9rem; font-weight: 500;">✅ All systems operational</p>
-    <p style="color: rgba(255,255,255,0.8); margin: 0.2rem 0 0 0; font-size: 0.8rem;">🔒 Privacy protection active</p>
+<div style="background: rgba(76, 175, 80, 0.35); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border-left: 4px solid #4CAF50; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+    <h4 style="color: white; margin-bottom: 0.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-weight: 700;">🟢 Model Status</h4>
+    <p style="color: white; margin: 0; font-size: 0.9rem; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">✅ All systems operational</p>
+    <p style="color: white; margin: 0.2rem 0 0 0; font-size: 0.8rem; font-weight: 500; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">🔒 Privacy protection active</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Help section
 with st.sidebar.expander("❓ Quick Help", expanded=False):
     st.markdown("""
-    <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">
-        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem;"><strong>🔍 Manual Prediction:</strong> Enter transaction details for single analysis</p>
+    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.3);">
+        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);"><strong>🔍 Manual Prediction:</strong> Enter transaction details for single analysis</p>
     </div>
-    <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">
-        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem;"><strong>📊 Batch Analysis:</strong> Upload CSV file for bulk processing</p>
+    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.3);">
+        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);"><strong>📊 Batch Analysis:</strong> Upload CSV file for bulk processing</p>
     </div>
-    <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">
-        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem;"><strong>📈 Feature Importance:</strong> View model insights and feature rankings</p>
+    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.3);">
+        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);"><strong>📈 Feature Importance:</strong> View model insights and feature rankings</p>
     </div>
-    <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">
-        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem;"><strong>⚙️ Settings:</strong> Configure model parameters and view information</p>
+    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.3);">
+        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);"><strong>⚙️ Settings:</strong> Configure model parameters and view information</p>
     </div>
-    <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 5px;">
-        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem;"><strong>🔒 Privacy:</strong> Sensitive data is automatically protected</p>
+    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 5px; border: 1px solid rgba(255,255,255,0.3);">
+        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);"><strong>🔒 Privacy:</strong> Sensitive data is automatically protected</p>
     </div>
     """, unsafe_allow_html=True)
 
 # Add footer
 st.sidebar.markdown("---")
 st.sidebar.markdown("""
-<div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);">
-    <p style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin: 0; font-weight: 500;">
+<div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 10px; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+    <p style="color: white; font-size: 0.8rem; margin: 0; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
         🛡️ FraudGuard AI v1.0<br>
         Powered by LightGBM
     </p>
