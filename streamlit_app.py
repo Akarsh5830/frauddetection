@@ -535,6 +535,11 @@ model, le_cat, le_gender, le_job, le_merchant, feature_names, merchant_names, th
 category_names = le_cat.classes_.tolist()
 job_names = le_job.classes_.tolist()
 
+# Force default page on first visit or reload
+if 'navigation_menu' not in st.session_state:
+    st.session_state['navigation_menu'] = "🏠 Dashboard"
+
+
 # Sidebar navigation with improved styling
 st.sidebar.markdown("""
 <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #6CA8FF 0%, #6B56C0 100%); border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1);">
@@ -555,6 +560,7 @@ nav_options = {
 page = st.sidebar.selectbox(
     "📋 Navigation Menu",
     list(nav_options.keys()),
+    index=list(nav_options.keys()).index(st.session_state['navigation_menu']),
     format_func=lambda x: f"{x} - {nav_options[x]}",
     key="navigation_menu"
 )
