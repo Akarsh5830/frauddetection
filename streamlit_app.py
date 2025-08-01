@@ -440,11 +440,13 @@ elif page == "🔍 Manual Prediction":
             try:
                 # Create input data with only the specified features
                 input_data = {
+                    'cc_num': 1234567812345678,
                     'merchant': merchant,
                     'category': category,
                     'amt': amt,
                     'gender': gender,
-                    'lat': lat,
+                    'lat': 40.7128,
+                    'long': -74.0060,
                     'long': long,
                     'city_pop': city_pop,
                     'job': job,
