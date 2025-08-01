@@ -348,7 +348,7 @@ elif page == "🔍 Manual Prediction":
                 help="Select the transaction category"
             )
             
-                         # Merchant
+            # Merchant
              merchant = st.text_input(
                  "Merchant Name",
                  placeholder="e.g., fraud_Rippin, Kub and Mann",
