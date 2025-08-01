@@ -177,7 +177,7 @@ st.markdown("""
     /* Improve sidebar text visibility and dropdown functionality */
     .css-1d391kg .stSelectbox > div > div > div {
         background-color: rgba(255, 255, 255, 0.3) !important;
-        color: #7FBCE2 !important;
+        color: #1a252f   !important;
         border: 2px solid rgba(0, 0, 0, 0.2) !important;
         border-radius: 8px !important;
         cursor: pointer !important;
