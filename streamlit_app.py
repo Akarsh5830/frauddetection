@@ -263,12 +263,43 @@ st.markdown("""
     .css-1d391kg .stSelectbox > div > div > div {
         pointer-events: auto !important;
         user-select: none !important;
+        cursor: pointer !important;
+    }
+    
+    /* Make entire dropdown area clickable */
+    .css-1d391kg .stSelectbox > div > div > div > div {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    /* Ensure dropdown options are fully clickable */
+    .css-1d391kg .stSelectbox > div > div > div > div > div > div {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        min-height: 40px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
     }
     
     /* Add focus states for better accessibility */
     .css-1d391kg .stSelectbox > div > div > div:focus-within {
         outline: 2px solid rgba(102, 126, 234, 0.6) !important;
         outline-offset: 2px !important;
+    }
+    
+    /* Improve mouse click detection */
+    .css-1d391kg .stSelectbox > div > div > div:hover {
+        background-color: rgba(255, 255, 255, 0.6) !important;
+    }
+    
+    /* Make sure dropdown container is fully interactive */
+    .css-1d391kg .stSelectbox > div > div > div > div > div {
+        pointer-events: auto !important;
+        cursor: pointer !important;
     }
     
     /* Improve sidebar text contrast */
@@ -319,15 +350,32 @@ st.markdown("""
     
     /* Additional fixes for dropdown functionality */
     .css-1d391kg .stSelectbox > div > div > div > div > div > div:focus {
-        background-color: #34495e !important;
-        outline: 2px solid rgba(255, 255, 255, 0.6);
-        outline-offset: 1px;
+        background-color: rgba(102, 126, 234, 0.2) !important;
+        outline: 2px solid rgba(102, 126, 234, 0.6) !important;
+        outline-offset: 1px !important;
     }
     
     /* Ensure proper spacing and clickability */
     .css-1d391kg .stSelectbox > div > div > div > div > div > div {
-        padding: 8px 12px !important;
-        min-height: 20px !important;
+        padding: 12px 16px !important;
+        min-height: 40px !important;
+        margin: 1px 0 !important;
+        border-radius: 6px !important;
+    }
+    
+    /* Force dropdown to be clickable */
+    .css-1d391kg .stSelectbox > div > div > div > div > div > div * {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+    }
+    
+    /* Improve dropdown trigger area */
+    .css-1d391kg .stSelectbox > div > div > div > div > div:first-child {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        min-height: 40px !important;
+        display: flex !important;
+        align-items: center !important;
     }
     
     /* Make dropdown more responsive */
