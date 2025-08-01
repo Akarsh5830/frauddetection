@@ -275,33 +275,33 @@ if page == "🏠 Dashboard":
     
     with col2:
         st.markdown("""
-                 <div class="result-card">
-             <h3 style="color: #667eea; margin-bottom: 1rem;">📈 Model Performance</h3>
-             <div style="margin-bottom: 1rem;">
-                 <p style="margin: 0.5rem 0; color: #34495e;"><strong>Precision (Fraud):</strong> 0.27</p>
-                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
-                     <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 27%; height: 100%; border-radius: 10px;"></div>
-                 </div>
-             </div>
-             <div style="margin-bottom: 1rem;">
-                 <p style="margin: 0.5rem 0; color: #34495e;"><strong>Recall (Fraud):</strong> 0.72</p>
-                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
-                     <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 72%; height: 100%; border-radius: 10px;"></div>
-                 </div>
-             </div>
-             <div style="margin-bottom: 1rem;">
-                 <p style="margin: 0.5rem 0; color: #34495e;"><strong>F1-Score (Fraud):</strong> 0.39</p>
-                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
-                     <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 39%; height: 100%; border-radius: 10px;"></div>
-                 </div>
-             </div>
-             <div style="margin-bottom: 1rem;">
-                 <p style="margin: 0.5rem 0; color: #34495e;"><strong>Overall Accuracy:</strong> 0.99</p>
-                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
-                     <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 99%; height: 100%; border-radius: 10px;"></div>
-                 </div>
-             </div>
-         </div>
+        <div class="result-card">
+            <h3 style="color: #667eea; margin-bottom: 1rem;">📈 Model Performance</h3>
+            <div style="margin-bottom: 1rem;">
+                <p style="margin: 0.5rem 0; color: #34495e;"><strong>Precision (Fraud):</strong> 0.27</p>
+                <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
+                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 27%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <p style="margin: 0.5rem 0; color: #34495e;"><strong>Recall (Fraud):</strong> 0.72</p>
+                <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
+                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 72%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <p style="margin: 0.5rem 0; color: #34495e;"><strong>F1-Score (Fraud):</strong> 0.39</p>
+                <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
+                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 39%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <p style="margin: 0.5rem 0; color: #34495e;"><strong>Overall Accuracy:</strong> 0.99</p>
+                <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
+                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 99%; height: 100%; border-radius: 10px;"></div>
+                </div>
+            </div>
+        </div>
         """, unsafe_allow_html=True)
 
 elif page == "🔍 Manual Prediction":
@@ -384,12 +384,12 @@ elif page == "🔍 Manual Prediction":
                 help="Select customer job title"
             )
             
-             # Note: Customer location not available in real data
-             st.info("📍 Customer location coordinates are not available in real transaction data")
-             
-             # Use default values for customer location (not available in real data)
-             lat = 40.7128  # Default NYC latitude
-             long = -74.0060  # Default NYC longitude
+            # Note: Customer location not available in real data
+            st.info("📍 Customer location coordinates are not available in real transaction data")
+            
+            # Use default values for customer location (not available in real data)
+            lat = 40.7128  # Default NYC latitude
+            long = -74.0060  # Default NYC longitude
         
         # Additional fields
         st.subheader("📍 Location & Population")
