@@ -225,14 +225,14 @@ if page == "🏠 Dashboard":
         </div>
         """, unsafe_allow_html=True)
     
-         with col3:
-         st.markdown("""
-         <div class="metric-card">
-             <h3 style="color: #667eea; margin-bottom: 0.5rem;">🔍 Features</h3>
-             <h2 style="color: #2c3e50; margin: 0;">9</h2>
-             <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Available Features</p>
-         </div>
-         """, unsafe_allow_html=True)
+    with col3:
+        st.markdown("""
+        <div class="metric-card">
+            <h3 style="color: #667eea; margin-bottom: 0.5rem;">🔍 Features</h3>
+            <h2 style="color: #2c3e50; margin: 0;">9</h2>
+            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Available Features</p>
+        </div>
+        """, unsafe_allow_html=True)
     
     with col4:
         st.markdown("""
