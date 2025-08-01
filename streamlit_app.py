@@ -3,7 +3,7 @@ import joblib
 import json
 import pandas as pd
 
-# Load model & encoders (cached)
+# Load model & encoders
 @st.cache_resource
 def load_all():
     model = joblib.load('lgb_model.pkl')
@@ -17,31 +17,19 @@ def load_all():
 
 model, le_cat, le_gender, le_job, le_merchant, feature_names = load_all()
 
-# Inject header HTML
+# Inject header
 with open('templates/header.html', 'r', encoding='utf-8') as f:
-    header_html = f.read()
-st.markdown(header_html, unsafe_allow_html=True)
+    st.markdown(f.read(), unsafe_allow_html=True)
 
-# Show mappings inside expander
-with st.expander("ℹ️ See label mappings"):
-    st.write("**Category mapping:**")
-    st.json(dict(zip(le_cat.classes_, le_cat.transform(le_cat.classes_).tolist())))
-    st.write("**Gender mapping:**")
-    st.json(dict(zip(le_gender.classes_, le_gender.transform(le_gender.classes_).tolist())))
-    st.write("**Job mapping:**")
-    st.json(dict(zip(le_job.classes_, le_job.transform(le_job.classes_).tolist())))
-    st.write("**Merchant mapping:**")
-    st.json(dict(zip(le_merchant.classes_, le_merchant.transform(le_merchant.classes_).tolist())))
-
-# Input card
+# Input form inside card
 st.markdown('<div class="card">', unsafe_allow_html=True)
-st.subheader("📝 Input transaction details:")
+st.subheader("📝 Enter transaction details:")
 
 col1, col2 = st.columns(2)
 with col1:
     category_input = st.selectbox("Category", le_cat.classes_)
     job_input = st.selectbox("Job", le_job.classes_)
-    amt = st.number_input("Transaction Amount", min_value=0.0, value=100.0)
+    amt = st.number_input("Transaction Amount ($)", min_value=0.0, value=100.0)
     unix_time = st.number_input("Transaction Unix Time", min_value=0)
 with col2:
     gender_input = st.selectbox("Gender", le_gender.classes_)
@@ -75,7 +63,6 @@ if st.button("🔍 Predict Fraud"):
     else:
         st.success(f"✅ Transaction predicted as **NOT fraud** (probability: {prob*100:.1f}%)")
 
-# Inject footer HTML
+# Inject footer
 with open('templates/footer.html', 'r', encoding='utf-8') as f:
-    footer_html = f.read()
-st.markdown(footer_html, unsafe_allow_html=True)
+    st.markdown(f.read(), unsafe_allow_html=True)
