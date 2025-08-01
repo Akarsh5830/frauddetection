@@ -225,14 +225,14 @@ if page == "🏠 Dashboard":
         </div>
         """, unsafe_allow_html=True)
     
-    with col3:
-        st.markdown("""
-        <div class="metric-card">
-            <h3 style="color: #667eea; margin-bottom: 0.5rem;">🔍 Features</h3>
-            <h2 style="color: #2c3e50; margin: 0;">11</h2>
-            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Selected Features</p>
-        </div>
-        """, unsafe_allow_html=True)
+         with col3:
+         st.markdown("""
+         <div class="metric-card">
+             <h3 style="color: #667eea; margin-bottom: 0.5rem;">🔍 Features</h3>
+             <h2 style="color: #2c3e50; margin: 0;">9</h2>
+             <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Available Features</p>
+         </div>
+         """, unsafe_allow_html=True)
     
     with col4:
         st.markdown("""
@@ -384,25 +384,12 @@ elif page == "🔍 Manual Prediction":
                 help="Select customer job title"
             )
             
-            # Latitude
-            lat = st.number_input(
-                "Customer Latitude",
-                min_value=-90.0,
-                max_value=90.0,
-                value=40.7128,
-                step=0.0001,
-                help="Enter customer location latitude"
-            )
-            
-            # Longitude
-            long = st.number_input(
-                "Customer Longitude",
-                min_value=-180.0,
-                max_value=180.0,
-                value=-74.0060,
-                step=0.0001,
-                help="Enter customer location longitude"
-            )
+             # Note: Customer location not available in real data
+             st.info("📍 Customer location coordinates are not available in real transaction data")
+             
+             # Use default values for customer location (not available in real data)
+             lat = 40.7128  # Default NYC latitude
+             long = -74.0060  # Default NYC longitude
         
         # Additional fields
         st.subheader("📍 Location & Population")
@@ -750,7 +737,7 @@ elif page == "⚙️ Settings":
         <h3 style="color: #667eea; margin-bottom: 1rem;">📋 Model Information</h3>
         <p><strong>Model Type:</strong> LightGBM Gradient Boosting</p>
         <p><strong>Training Date:</strong> December 2024</p>
-        <p><strong>Features Used:</strong> 11 selected features</p>
+        <p><strong>Features Used:</strong> 9 available features</p>
         <p><strong>Last Updated:</strong> {datetime.now().strftime("%B %d, %Y")}</p>
     </div>
     """, unsafe_allow_html=True)
@@ -762,14 +749,12 @@ elif page == "⚙️ Settings":
     </div>
     """, unsafe_allow_html=True)
     
-    # Use only the specified features for prediction
+    # Use only the available features for prediction (customer lat/long not available in real data)
     feature_descriptions = {
         'merchant': 'Merchant name',
         'category': 'Transaction category',
         'amt': 'Transaction amount',
         'gender': 'Customer gender',
-        'lat': 'Customer latitude',
-        'long': 'Customer longitude',
         'city_pop': 'City population',
         'job': 'Customer job title',
         'unix_time': 'Transaction timestamp',
@@ -777,11 +762,19 @@ elif page == "⚙️ Settings":
         'merch_long': 'Merchant longitude'
     }
     
-    required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+    # Note: Customer lat/long are set to default values (not available in real data)
+    available_features = ['merchant', 'category', 'amt', 'gender', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
     
     feature_df = pd.DataFrame([
         {'Feature': feat, 'Description': feature_descriptions.get(feat, 'N/A')}
-        for feat in required_features
+        for feat in available_features
     ])
     
     st.table(feature_df)
+    
+    # Add note about customer location
+    st.markdown("""
+    <div class="info-indicator fade-in">
+        📍 Note: Customer latitude and longitude are not available in real transaction data and are set to default values
+    </div>
+    """, unsafe_allow_html=True)
