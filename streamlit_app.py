@@ -16,6 +16,39 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Add custom CSS for better page background
+st.markdown("""
+<style>
+    /* Main page background */
+    .main .block-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
+    /* Improve overall page styling */
+    .stApp {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    /* Better text contrast */
+    .main .block-container h1, 
+    .main .block-container h2, 
+    .main .block-container h3 {
+        color: #2c3e50;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    /* Improve card readability */
+    .metric-card, .input-card, .result-card {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # Custom CSS
 st.markdown("""
 <style>
@@ -94,7 +127,28 @@ st.markdown("""
     
     /* Sidebar styling */
     .css-1d391kg {
-        background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+        background: linear-gradient(180deg, #1a252f 0%, #2c3e50 100%);
+    }
+    
+    /* Improve sidebar text visibility */
+    .css-1d391kg .stSelectbox > div > div > div {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .css-1d391kg .stSelectbox > div > div > div:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .css-1d391kg .stSelectbox > div > div > div > div {
+        color: white;
+    }
+    
+    .css-1d391kg .stExpander > div > div {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     /* Dataframe styling */
@@ -193,7 +247,7 @@ job_names = le_job.classes_.tolist()
 
 # Sidebar navigation with improved styling
 st.sidebar.markdown("""
-<div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+<div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
     <h2 style="color: white; margin-bottom: 0.5rem; font-size: 1.5rem;">🛡️ FraudGuard AI</h2>
     <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 0.9rem;">Advanced Fraud Detection</p>
 </div>
@@ -219,42 +273,48 @@ st.sidebar.markdown("---")
 
 # Quick stats in sidebar
 st.sidebar.markdown("""
-<div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
-    <h4 style="color: white; margin-bottom: 0.5rem;">📊 Quick Stats</h4>
-    <p style="color: rgba(255,255,255,0.8); margin: 0.2rem 0; font-size: 0.9rem;">🎯 Model Accuracy: 99.0%</p>
-    <p style="color: rgba(255,255,255,0.8); margin: 0.2rem 0; font-size: 0.9rem;">⚡ Processing Speed: 0.2s</p>
-    <p style="color: rgba(255,255,255,0.8); margin: 0.2rem 0; font-size: 0.9rem;">🔍 Features: 13</p>
+<div style="background: rgba(255,255,255,0.15); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.2);">
+    <h4 style="color: white; margin-bottom: 0.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">📊 Quick Stats</h4>
+    <p style="color: rgba(255,255,255,0.95); margin: 0.2rem 0; font-size: 0.9rem; font-weight: 500;">🎯 Model Accuracy: 99.0%</p>
+    <p style="color: rgba(255,255,255,0.95); margin: 0.2rem 0; font-size: 0.9rem; font-weight: 500;">⚡ Processing Speed: 0.2s</p>
+    <p style="color: rgba(255,255,255,0.95); margin: 0.2rem 0; font-size: 0.9rem; font-weight: 500;">🔍 Features: 13</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Model status indicator
 st.sidebar.markdown("""
-<div style="background: rgba(76, 175, 80, 0.2); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border-left: 4px solid #4CAF50;">
-    <h4 style="color: white; margin-bottom: 0.5rem;">🟢 Model Status</h4>
-    <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 0.9rem;">✅ All systems operational</p>
-    <p style="color: rgba(255,255,255,0.7); margin: 0.2rem 0 0 0; font-size: 0.8rem;">🔒 Privacy protection active</p>
+<div style="background: rgba(76, 175, 80, 0.25); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border-left: 4px solid #4CAF50; border: 1px solid rgba(255,255,255,0.2);">
+    <h4 style="color: white; margin-bottom: 0.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">🟢 Model Status</h4>
+    <p style="color: rgba(255,255,255,0.95); margin: 0; font-size: 0.9rem; font-weight: 500;">✅ All systems operational</p>
+    <p style="color: rgba(255,255,255,0.8); margin: 0.2rem 0 0 0; font-size: 0.8rem;">🔒 Privacy protection active</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Help section
 with st.sidebar.expander("❓ Quick Help", expanded=False):
     st.markdown("""
-    **🔍 Manual Prediction:** Enter transaction details for single analysis
-    
-    **📊 Batch Analysis:** Upload CSV file for bulk processing
-    
-    **📈 Feature Importance:** View model insights and feature rankings
-    
-    **⚙️ Settings:** Configure model parameters and view information
-    
-    **🔒 Privacy:** Sensitive data is automatically protected
-    """)
+    <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">
+        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem;"><strong>🔍 Manual Prediction:</strong> Enter transaction details for single analysis</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">
+        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem;"><strong>📊 Batch Analysis:</strong> Upload CSV file for bulk processing</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">
+        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem;"><strong>📈 Feature Importance:</strong> View model insights and feature rankings</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">
+        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem;"><strong>⚙️ Settings:</strong> Configure model parameters and view information</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 5px;">
+        <p style="color: white; margin: 0.2rem 0; font-size: 0.85rem;"><strong>🔒 Privacy:</strong> Sensitive data is automatically protected</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Add footer
 st.sidebar.markdown("---")
 st.sidebar.markdown("""
-<div style="text-align: center; padding: 1rem;">
-    <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; margin: 0;">
+<div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);">
+    <p style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin: 0; font-weight: 500;">
         🛡️ FraudGuard AI v1.0<br>
         Powered by LightGBM
     </p>
@@ -1043,24 +1103,6 @@ elif page == "⚙️ Settings":
         🔒 <strong>Privacy Protected:</strong> Sensitive personal information (credit card number, ZIP code, customer location) is automatically handled with placeholder values to protect user privacy while maintaining model functionality.
     </div>
     """, unsafe_allow_html=True)
-
-    # Show all available categories and job descriptions
-    st.markdown("""
-    <div class="result-card fade-in">
-        <h3 style="color: #667eea; margin-bottom: 1rem;">🗂️ Available Categories & Job Descriptions</h3>
-    </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("**Available Categories:**")
-        st.write(", ".join(category_names))
-    
-    with col2:
-        st.markdown("**Available Job Titles:**")
-        st.write(", ".join(job_names[:20]) + "...")  # Show first 20 jobs
-        st.info(f"Total: {len(job_names)} job titles available")
 
     # Success message about the fix
     st.markdown("""
