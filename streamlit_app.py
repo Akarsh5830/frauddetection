@@ -3,7 +3,7 @@ import joblib
 import json
 import pandas as pd
 
-# ✅ Load model & encoders once (cache)
+# ✅ Load model & encoders once
 @st.cache_resource
 def load_all():
     model = joblib.load('lgb_model.pkl')
@@ -17,15 +17,15 @@ def load_all():
 
 model, le_cat, le_gender, le_job, le_merchant, feature_names = load_all()
 
-# ✅ Inject modern header & info box
+# ✅ Show custom header and info box from HTML
 with open('templates/header.html', 'r', encoding='utf-8') as f:
     st.markdown(f.read(), unsafe_allow_html=True)
 
-# ✅ Card: input form
+# ✅ Render form inside card
 st.markdown('<div class="card">', unsafe_allow_html=True)
+
 st.subheader("📝 Enter transaction details:")
 
-# Split inputs in two columns for better layout
 col1, col2 = st.columns(2)
 
 with col1:
@@ -45,7 +45,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # ✅ Predict button
 if st.button("🔍 Predict Fraud"):
-    # Encode categorical inputs
+    # Encode text inputs
     category_enc = le_cat.transform([category_input])[0]
     gender_enc = le_gender.transform([gender_input])[0]
     job_enc = le_job.transform([job_input])[0]
@@ -59,19 +59,20 @@ if st.button("🔍 Predict Fraud"):
         'amt', 'city_pop', 'unix_time', 'merch_lat', 'merch_long',
         'category', 'gender', 'job', 'merchant'
     ])
-    # Reorder columns to match training
+
+    # Reorder to match training
     data = data.reindex(columns=feature_names)
 
     pred = model.predict(data)[0]
     prob = model.predict_proba(data)[0][1]
 
-    # Show result nicely
+    # Show result
     if pred == 1:
         st.error(f"⚠️ Transaction predicted as **FRAUD**! (probability: {prob*100:.1f}%)")
     else:
         st.success(f"✅ Transaction predicted as **NOT fraud** (probability: {prob*100:.1f}%)")
 
-# ✅ Footer (simple)
+# ✅ Footer
 st.markdown("""
 <footer style="text-align:center; font-size:14px; color:#95a5a6; margin:40px 0;">
 Built by Akarsh Yadav 🚀
