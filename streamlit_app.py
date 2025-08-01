@@ -424,10 +424,7 @@ elif page == "🔍 Manual Prediction":
                 step=0.0001,
                 help="Enter merchant location longitude"
             )
-         
-         # Submit button inside the form
-         submitted = st.form_submit_button("🔍 Analyze Transaction")
-
+            submitted = st.form_submit_button("🔍 Analyze Transaction")
         
         if submitted:
             try:
