@@ -52,12 +52,11 @@ st.markdown("""
         margin: 1rem 0;
     }
     
-    .upload-card {
+    .input-card {
         background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         padding: 2rem;
         border-radius: 20px;
         box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        text-align: center;
         margin: 2rem 0;
     }
     
@@ -122,6 +121,15 @@ st.markdown("""
         font-weight: 600;
     }
     
+    .info-indicator {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: 600;
+    }
+    
     /* Animation */
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
@@ -130,6 +138,26 @@ st.markdown("""
     
     .fade-in {
         animation: fadeIn 0.6s ease-out;
+    }
+    
+    /* Form styling */
+    .stTextInput > div > div > input {
+        border-radius: 10px;
+        border: 2px solid #e1e8ed;
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+    
+    .stSelectbox > div > div > div {
+        border-radius: 10px;
+        border: 2px solid #e1e8ed;
+    }
+    
+    .stNumberInput > div > div > input {
+        border-radius: 10px;
+        border: 2px solid #e1e8ed;
+        padding: 0.75rem;
+        font-size: 1rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -152,6 +180,9 @@ def load_all():
             threshold = 0.5
         return model, le_cat, le_gender, le_job, le_merchant, feature_names, threshold
 
+# Load models
+model, le_cat, le_gender, le_job, le_merchant, feature_names, threshold = load_all()
+
 # Sidebar navigation
 st.sidebar.markdown("""
 <div style="text-align: center; padding: 1rem;">
@@ -161,18 +192,15 @@ st.sidebar.markdown("""
 
 page = st.sidebar.selectbox(
     "Navigation",
-    ["🏠 Dashboard", "📊 Upload & Analyze", "📈 Analytics", "⚙️ Settings"]
+    ["🏠 Dashboard", "🔍 Manual Prediction", "📊 Batch Analysis", "⚙️ Settings"]
 )
-
-# Load models
-model, le_cat, le_gender, le_job, le_merchant, feature_names, threshold = load_all()
 
 if page == "🏠 Dashboard":
     # Main header
     st.markdown("""
     <div class="main-header fade-in">
         <h1>🛡️ FraudGuard AI</h1>
-        <p>Advanced Machine Learning-Powered Fraud Detection System</p>
+        <p>Advanced Machine Learning-Powered Credit Card Fraud Detection System</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -182,54 +210,46 @@ if page == "🏠 Dashboard":
     with col1:
         st.markdown("""
         <div class="metric-card">
-            <h3 style="color: #667eea; margin-bottom: 0.5rem;">🎯 Accuracy</h3>
+            <h3 style="color: #667eea; margin-bottom: 0.5rem;">🎯 Model Accuracy</h3>
             <h2 style="color: #2c3e50; margin: 0;">98.7%</h2>
-            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Model Performance</p>
+            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">LightGBM Performance</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown("""
         <div class="metric-card">
-            <h3 style="color: #667eea; margin-bottom: 0.5rem;">⚡ Speed</h3>
+            <h3 style="color: #667eea; margin-bottom: 0.5rem;">⚡ Processing Speed</h3>
             <h2 style="color: #2c3e50; margin: 0;">0.2s</h2>
-            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Avg. Processing Time</p>
+            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Per Transaction</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
         st.markdown("""
         <div class="metric-card">
-            <h3 style="color: #667eea; margin-bottom: 0.5rem;">🔍 Detected</h3>
-            <h2 style="color: #2c3e50; margin: 0;">1,247</h2>
-            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Fraud Cases Today</p>
+            <h3 style="color: #667eea; margin-bottom: 0.5rem;">🔍 Features</h3>
+            <h2 style="color: #2c3e50; margin: 0;">13</h2>
+            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Engineered Features</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col4:
         st.markdown("""
         <div class="metric-card">
-            <h3 style="color: #667eea; margin-bottom: 0.5rem;">💰 Saved</h3>
-            <h2 style="color: #2c3e50; margin: 0;">$2.4M</h2>
-            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">This Month</p>
+            <h3 style="color: #667eea; margin-bottom: 0.5rem;">📊 Dataset</h3>
+            <h2 style="color: #2c3e50; margin: 0;">555K+</h2>
+            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Training Records</p>
         </div>
         """, unsafe_allow_html=True)
     
     # Quick start section
     st.markdown("""
-    <div class="upload-card fade-in">
-        <h2 style="color: #2c3e50; margin-bottom: 1rem;">🚀 Quick Start</h2>
+    <div class="input-card fade-in">
+        <h2 style="color: #2c3e50; margin-bottom: 1rem;">🚀 Get Started</h2>
         <p style="color: #34495e; font-size: 1.1rem; margin-bottom: 2rem;">
-            Upload your transaction data and get instant fraud predictions powered by advanced AI algorithms.
+            Enter transaction details manually or upload a CSV file for batch analysis.
         </p>
-        <div style="display: flex; justify-content: center; gap: 1rem;">
-            <button style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 25px; padding: 1rem 2rem; font-weight: 600; cursor: pointer;" onclick="window.location.href='#upload'">
-                📤 Upload Data
-            </button>
-            <button style="background: linear-gradient(90deg, #56ab2f 0%, #a8e6cf 100%); color: white; border: none; border-radius: 25px; padding: 1rem 2rem; font-weight: 600; cursor: pointer;">
-                📖 View Documentation
-            </button>
-        </div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -239,14 +259,16 @@ if page == "🏠 Dashboard":
     with col1:
         st.markdown("""
         <div class="result-card">
-            <h3 style="color: #667eea; margin-bottom: 1rem;">🎯 Key Features</h3>
+            <h3 style="color: #667eea; margin-bottom: 1rem;">🎯 Model Features</h3>
             <ul style="color: #34495e; line-height: 2;">
-                <li>🔍 Real-time fraud detection</li>
-                <li>📊 Advanced analytics dashboard</li>
-                <li>⚡ Lightning-fast processing</li>
-                <li>🛡️ High accuracy predictions</li>
-                <li>📱 Mobile-responsive interface</li>
-                <li>🔒 Secure data handling</li>
+                <li>💳 Credit Card Number</li>
+                <li>🏪 Merchant Information</li>
+                <li>📂 Transaction Category</li>
+                <li>💰 Transaction Amount</li>
+                <li>👤 Customer Gender</li>
+                <li>📍 Geographic Location</li>
+                <li>🏢 Customer Job</li>
+                <li>⏰ Transaction Time</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -254,7 +276,7 @@ if page == "🏠 Dashboard":
     with col2:
         st.markdown("""
         <div class="result-card">
-            <h3 style="color: #667eea; margin-bottom: 1rem;">📈 Performance Metrics</h3>
+            <h3 style="color: #667eea; margin-bottom: 1rem;">📈 Model Performance</h3>
             <div style="margin-bottom: 1rem;">
                 <p style="margin: 0.5rem 0; color: #34495e;"><strong>Precision:</strong> 96.8%</p>
                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
@@ -276,20 +298,293 @@ if page == "🏠 Dashboard":
         </div>
         """, unsafe_allow_html=True)
 
-elif page == "📊 Upload & Analyze":
+elif page == "🔍 Manual Prediction":
     st.markdown("""
     <div class="main-header fade-in">
-        <h1>📊 Upload & Analyze</h1>
-        <p>Upload your transaction data for instant fraud analysis</p>
+        <h1>🔍 Manual Transaction Analysis</h1>
+        <p>Enter transaction details to get instant fraud prediction</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Transaction form
+    st.markdown("""
+    <div class="input-card fade-in">
+        <h2 style="color: #2c3e50; margin-bottom: 1rem;">📝 Transaction Details</h2>
+        <p style="color: #34495e; font-size: 1.1rem; margin-bottom: 2rem;">
+            Fill in the transaction information below to analyze fraud risk.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    with st.form("fraud_prediction_form"):
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.subheader("💳 Card & Transaction Info")
+            
+            # Credit card number
+            cc_num = st.text_input(
+                "Credit Card Number",
+                placeholder="e.g., 2703186189652095",
+                help="Enter the credit card number"
+            )
+            
+            # Transaction amount
+            amt = st.number_input(
+                "Transaction Amount ($)",
+                min_value=0.01,
+                max_value=10000.0,
+                value=100.0,
+                step=0.01,
+                help="Enter the transaction amount"
+            )
+            
+            # Category
+            categories = ['misc_net', 'grocery_pos', 'entertainment', 'gas_transport', 
+                         'misc_pos', 'grocery_net', 'shopping_net', 'shopping_pos', 
+                         'food_dining', 'personal_care', 'health_fitness', 'travel']
+            category = st.selectbox(
+                "Transaction Category",
+                categories,
+                help="Select the transaction category"
+            )
+            
+            # Merchant
+            merchant = st.text_input(
+                "Merchant Name",
+                placeholder="e.g., fraud_Rippin, Kub and Mann",
+                help="Enter the merchant name"
+            )
+            
+            # Unix time
+            unix_time = st.number_input(
+                "Unix Timestamp",
+                min_value=0,
+                value=int(time.time()),
+                help="Enter the transaction timestamp in Unix format"
+            )
+        
+        with col2:
+            st.subheader("👤 Customer Information")
+            
+            # Gender
+            gender = st.selectbox(
+                "Gender",
+                ["M", "F"],
+                help="Select customer gender"
+            )
+            
+            # Job
+            jobs = ['Psychologist, counselling', 'Special educational needs teacher',
+                   'Nature conservation officer', 'Patent attorney', 'Transport planner',
+                   'Arboriculturist', 'Designer, multimedia', 'Public affairs consultant',
+                   'Pathologist', 'Dance movement psychotherapist']
+            job = st.selectbox(
+                "Job Title",
+                jobs,
+                help="Select customer job title"
+            )
+            
+            # ZIP code
+            zip_code = st.number_input(
+                "ZIP Code",
+                min_value=10000,
+                max_value=99999,
+                value=12345,
+                help="Enter customer ZIP code"
+            )
+            
+            # Latitude
+            lat = st.number_input(
+                "Customer Latitude",
+                min_value=-90.0,
+                max_value=90.0,
+                value=40.7128,
+                step=0.0001,
+                help="Enter customer location latitude"
+            )
+            
+            # Longitude
+            long = st.number_input(
+                "Customer Longitude",
+                min_value=-180.0,
+                max_value=180.0,
+                value=-74.0060,
+                step=0.0001,
+                help="Enter customer location longitude"
+            )
+        
+        # Additional fields
+        st.subheader("📍 Location & Population")
+        
+        col3, col4, col5 = st.columns(3)
+        
+        with col3:
+            # City population
+            city_pop = st.number_input(
+                "City Population",
+                min_value=1,
+                max_value=10000000,
+                value=1000000,
+                help="Enter city population"
+            )
+        
+        with col4:
+            # Merchant latitude
+            merch_lat = st.number_input(
+                "Merchant Latitude",
+                min_value=-90.0,
+                max_value=90.0,
+                value=40.7589,
+                step=0.0001,
+                help="Enter merchant location latitude"
+            )
+        
+        with col5:
+            # Merchant longitude
+            merch_long = st.number_input(
+                "Merchant Longitude",
+                min_value=-180.0,
+                max_value=180.0,
+                value=-73.9851,
+                step=0.0001,
+                help="Enter merchant location longitude"
+            )
+        
+        # Submit button
+        submitted = st.form_submit_button(
+            "🔍 Analyze Transaction",
+            use_container_width=True
+        )
+        
+        if submitted:
+            if cc_num and merchant:
+                try:
+                    # Create input data
+                    input_data = {
+                        'cc_num': int(cc_num),
+                        'merchant': merchant,
+                        'category': category,
+                        'amt': amt,
+                        'gender': gender,
+                        'zip': zip_code,
+                        'lat': lat,
+                        'long': long,
+                        'city_pop': city_pop,
+                        'job': job,
+                        'unix_time': unix_time,
+                        'merch_lat': merch_lat,
+                        'merch_long': merch_long
+                    }
+                    
+                    # Convert to DataFrame
+                    df_input = pd.DataFrame([input_data])
+                    
+                    # Encode categorical variables
+                    df_input['category'] = le_cat.transform(df_input['category'])
+                    df_input['gender'] = le_gender.transform(df_input['gender'])
+                    df_input['job'] = le_job.transform(df_input['job'])
+                    df_input['merchant'] = le_merchant.transform(df_input['merchant'])
+                    
+                    # Ensure correct column order
+                    df_input = df_input[feature_names]
+                    
+                    # Make prediction
+                    with st.spinner("🔄 Analyzing transaction..."):
+                        probability = model.predict_proba(df_input)[0][1]
+                        prediction = 1 if probability >= threshold else 0
+                    
+                    # Display results
+                    st.markdown("""
+                    <div class="result-card fade-in">
+                        <h3 style="color: #667eea; margin-bottom: 1rem;">🎯 Analysis Results</h3>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    col_result1, col_result2 = st.columns(2)
+                    
+                    with col_result1:
+                        st.metric(
+                            "Fraud Probability",
+                            f"{probability:.3f}",
+                            delta=f"{probability:.1%} risk"
+                        )
+                        
+                        # Risk level indicator
+                        if probability >= 0.8:
+                            st.markdown("""
+                            <div class="warning-indicator fade-in">
+                                🚨 HIGH RISK - Likely Fraudulent
+                            </div>
+                            """, unsafe_allow_html=True)
+                        elif probability >= 0.5:
+                            st.markdown("""
+                            <div class="info-indicator fade-in">
+                                ⚠️ MEDIUM RISK - Suspicious Activity
+                            </div>
+                            """, unsafe_allow_html=True)
+                        else:
+                            st.markdown("""
+                            <div class="success-indicator fade-in">
+                                ✅ LOW RISK - Likely Legitimate
+                            </div>
+                            """, unsafe_allow_html=True)
+                    
+                    with col_result2:
+                        st.metric(
+                            "Prediction",
+                            "FRAUD" if prediction == 1 else "LEGITIMATE",
+                            delta="Model Decision"
+                        )
+                        
+                        # Confidence level
+                        confidence = max(probability, 1 - probability)
+                        st.metric(
+                            "Confidence",
+                            f"{confidence:.1%}",
+                            delta="Model Confidence"
+                        )
+                    
+                    # Detailed analysis
+                    st.markdown("""
+                    <div class="result-card fade-in">
+                        <h3 style="color: #667eea; margin-bottom: 1rem;">📊 Transaction Summary</h3>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    summary_data = {
+                        'Field': ['Amount', 'Category', 'Merchant', 'Location Distance', 'Time'],
+                        'Value': [
+                            f"${amt:.2f}",
+                            category.replace('_', ' ').title(),
+                            merchant,
+                            f"{((lat - merch_lat)**2 + (long - merch_long)**2)**0.5:.2f}°",
+                            datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d %H:%M:%S')
+                        ]
+                    }
+                    
+                    st.table(pd.DataFrame(summary_data))
+                    
+                except Exception as e:
+                    st.error(f"❌ Error processing transaction: {str(e)}")
+                    st.info("Please check your input values and try again.")
+            else:
+                st.warning("⚠️ Please fill in all required fields (Credit Card Number and Merchant Name).")
+
+elif page == "📊 Batch Analysis":
+    st.markdown("""
+    <div class="main-header fade-in">
+        <h1>📊 Batch Transaction Analysis</h1>
+        <p>Upload CSV file for bulk fraud detection</p>
     </div>
     """, unsafe_allow_html=True)
     
     # File upload section
     st.markdown("""
-    <div class="upload-card fade-in">
-        <h2 style="color: #2c3e50; margin-bottom: 1rem;">📤 Upload Your Data</h2>
+    <div class="input-card fade-in">
+        <h2 style="color: #2c3e50; margin-bottom: 1rem;">📤 Upload Transaction Data</h2>
         <p style="color: #34495e; font-size: 1.1rem; margin-bottom: 2rem;">
-            Supported formats: CSV files with transaction data
+            Upload a CSV file containing transaction data for batch analysis.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -384,7 +679,7 @@ elif page == "📊 Upload & Analyze":
             with col4:
                 st.metric("Avg. Risk Score", f"{avg_probability:.3f}")
             
-            # Risk distribution chart using Streamlit's built-in charting
+            # Risk distribution chart
             st.markdown("""
             <div class="result-card fade-in">
                 <h3 style="color: #667eea; margin-bottom: 1rem;">📊 Risk Score Distribution</h3>
@@ -435,54 +730,11 @@ elif page == "📊 Upload & Analyze":
             st.error(f"❌ Error processing file: {str(e)}")
             st.info("Please ensure your CSV file contains the required columns and is properly formatted.")
 
-elif page == "📈 Analytics":
-    st.markdown("""
-    <div class="main-header fade-in">
-        <h1>📈 Analytics Dashboard</h1>
-        <p>Comprehensive fraud detection insights and trends</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Sample analytics data
-    st.markdown("""
-    <div class="result-card fade-in">
-        <h3 style="color: #667eea; margin-bottom: 1rem;">📊 Fraud Detection Trends</h3>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Sample trend data using Streamlit's built-in charting
-    dates = pd.date_range(start='2024-01-01', end='2024-12-31', freq='D')
-    fraud_counts = np.random.poisson(50, len(dates)) + np.sin(np.arange(len(dates)) * 0.1) * 20
-    
-    trend_data = pd.DataFrame({
-        'Date': dates,
-        'Fraud Cases Detected': fraud_counts
-    })
-    
-    st.line_chart(trend_data.set_index('Date'))
-    
-    # Category analysis
-    st.markdown("""
-    <div class="result-card fade-in">
-        <h3 style="color: #667eea; margin-bottom: 1rem;">📊 Fraud Rate by Category</h3>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    categories = ['grocery', 'gas_transport', 'shopping_net', 'shopping_pos', 'misc_net', 'misc_pos']
-    fraud_rates = [0.02, 0.05, 0.08, 0.03, 0.12, 0.04]
-    
-    category_data = pd.DataFrame({
-        'Category': categories,
-        'Fraud Rate': fraud_rates
-    })
-    
-    st.bar_chart(category_data.set_index('Category'))
-
 elif page == "⚙️ Settings":
     st.markdown("""
     <div class="main-header fade-in">
-        <h1>⚙️ Settings</h1>
-        <p>Configure your fraud detection parameters</p>
+        <h1>⚙️ Model Settings</h1>
+        <p>Configure fraud detection parameters</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -516,3 +768,33 @@ elif page == "⚙️ Settings":
         <p><strong>Last Updated:</strong> {datetime.now().strftime("%B %d, %Y")}</p>
     </div>
     """.format(len(feature_names)), unsafe_allow_html=True)
+    
+    # Feature information
+    st.markdown("""
+    <div class="result-card fade-in">
+        <h3 style="color: #667eea; margin-bottom: 1rem;">🔍 Feature Details</h3>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    feature_descriptions = {
+        'cc_num': 'Credit card number',
+        'merchant': 'Merchant name',
+        'category': 'Transaction category',
+        'amt': 'Transaction amount',
+        'gender': 'Customer gender',
+        'zip': 'Customer ZIP code',
+        'lat': 'Customer latitude',
+        'long': 'Customer longitude',
+        'city_pop': 'City population',
+        'job': 'Customer job title',
+        'unix_time': 'Transaction timestamp',
+        'merch_lat': 'Merchant latitude',
+        'merch_long': 'Merchant longitude'
+    }
+    
+    feature_df = pd.DataFrame([
+        {'Feature': feat, 'Description': feature_descriptions.get(feat, 'N/A')}
+        for feat in feature_names
+    ])
+    
+    st.table(feature_df)
