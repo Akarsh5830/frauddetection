@@ -174,44 +174,74 @@ st.markdown("""
         background: linear-gradient(180deg, #0f1419 0%, #1a252f 100%);
     }
     
-    /* Improve sidebar text visibility */
+    /* Improve sidebar text visibility and dropdown functionality */
     .css-1d391kg .stSelectbox > div > div > div {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.25);
         color: white !important;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.4);
         border-radius: 8px;
+        cursor: pointer !important;
+        transition: all 0.3s ease;
     }
     
     .css-1d391kg .stSelectbox > div > div > div:hover {
-        background-color: rgba(255, 255, 255, 0.25);
-        border-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.35);
+        border-color: rgba(255, 255, 255, 0.6);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .css-1d391kg .stSelectbox > div > div > div:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
     
     .css-1d391kg .stSelectbox > div > div > div > div {
         color: white !important;
-        font-weight: 600;
+        font-weight: 700;
+        font-size: 1rem;
     }
     
     .css-1d391kg .stSelectbox > div > div > div > div > div {
         color: white !important;
-        font-weight: 600;
+        font-weight: 700;
+        font-size: 1rem;
     }
     
     .css-1d391kg .stExpander > div > div {
-        background-color: rgba(255, 255, 255, 0.15);
-        border: 2px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.3);
         border-radius: 8px;
+        cursor: pointer !important;
     }
     
-    /* Fix dropdown options visibility */
+    /* Fix dropdown options visibility and functionality */
     .css-1d391kg .stSelectbox > div > div > div > div > div > div {
-        background-color: #2c3e50 !important;
+        background-color: #1a252f !important;
         color: white !important;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 6px;
+        margin: 2px 0;
+        cursor: pointer !important;
+        transition: all 0.2s ease;
     }
     
     .css-1d391kg .stSelectbox > div > div > div > div > div > div:hover {
-        background-color: #34495e !important;
+        background-color: #2c3e50 !important;
+        border-color: rgba(255, 255, 255, 0.6);
+        transform: translateX(2px);
+    }
+    
+    /* Ensure dropdown menu is clickable */
+    .css-1d391kg .stSelectbox > div > div > div > div > div {
+        z-index: 1000 !important;
+        position: relative !important;
+    }
+    
+    /* Make sure the dropdown container is properly positioned */
+    .css-1d391kg .stSelectbox {
+        position: relative !important;
+        z-index: 999 !important;
     }
     
     /* Improve sidebar text contrast */
@@ -225,6 +255,45 @@ st.markdown("""
         color: white !important;
         font-weight: 600;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    
+    /* Additional fixes for dropdown functionality */
+    .css-1d391kg .stSelectbox > div > div > div > div > div > div:focus {
+        background-color: #34495e !important;
+        outline: 2px solid rgba(255, 255, 255, 0.6);
+        outline-offset: 1px;
+    }
+    
+    /* Ensure proper spacing and clickability */
+    .css-1d391kg .stSelectbox > div > div > div > div > div > div {
+        padding: 8px 12px !important;
+        min-height: 20px !important;
+    }
+    
+    /* Make dropdown more responsive */
+    .css-1d391kg .stSelectbox > div > div > div > div > div {
+        max-height: 300px !important;
+        overflow-y: auto !important;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    }
+    
+    /* Custom scrollbar for dropdown */
+    .css-1d391kg .stSelectbox > div > div > div > div > div::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .css-1d391kg .stSelectbox > div > div > div > div > div::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    .css-1d391kg .stSelectbox > div > div > div > div > div::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+    }
+    
+    .css-1d391kg .stSelectbox > div > div > div > div > div::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
     }
     
     /* Dataframe styling */
