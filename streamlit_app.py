@@ -3,7 +3,7 @@ import joblib
 import json
 import pandas as pd
 
-# Load model & encoders (cached)
+# ✅ Load model & encoders once (cache)
 @st.cache_resource
 def load_all():
     model = joblib.load('lgb_model.pkl')
@@ -17,40 +17,41 @@ def load_all():
 
 model, le_cat, le_gender, le_job, le_merchant, feature_names = load_all()
 
-# Inject header HTML
-try:
-    with open('templates/header.html', 'r', encoding='utf-8') as f:
-        header_html = f.read()
-    st.markdown(header_html, unsafe_allow_html=True)
-except FileNotFoundError:
-    st.error("Header file not found. Please check the file path.")
-except Exception as e:
-    st.error(f"An error occurred: {e}")
+# ✅ Inject modern header & info box
+with open('templates/header.html', 'r', encoding='utf-8') as f:
+    st.markdown(f.read(), unsafe_allow_html=True)
 
-# Input form inside card
+# ✅ Card: input form
 st.markdown('<div class="card">', unsafe_allow_html=True)
 st.subheader("📝 Enter transaction details:")
+
+# Split inputs in two columns for better layout
 col1, col2 = st.columns(2)
+
 with col1:
     category_input = st.selectbox("Category", le_cat.classes_)
     job_input = st.selectbox("Job", le_job.classes_)
     amt = st.number_input("Transaction Amount ($)", min_value=0.0, value=100.0)
     unix_time = st.number_input("Transaction Unix Time", min_value=0)
+
 with col2:
     gender_input = st.selectbox("Gender", le_gender.classes_)
     merchant_input = st.selectbox("Merchant", le_merchant.classes_)
     city_pop = st.number_input("City Population", min_value=0)
     merch_lat = st.number_input("Merchant Latitude", format="%.6f")
     merch_long = st.number_input("Merchant Longitude", format="%.6f")
+
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Predict button
+# ✅ Predict button
 if st.button("🔍 Predict Fraud"):
+    # Encode categorical inputs
     category_enc = le_cat.transform([category_input])[0]
     gender_enc = le_gender.transform([gender_input])[0]
     job_enc = le_job.transform([job_input])[0]
     merchant_enc = le_merchant.transform([merchant_input])[0]
-    
+
+    # Build dataframe
     data = pd.DataFrame([[
         amt, city_pop, unix_time, merch_lat, merch_long,
         category_enc, gender_enc, job_enc, merchant_enc
@@ -58,22 +59,21 @@ if st.button("🔍 Predict Fraud"):
         'amt', 'city_pop', 'unix_time', 'merch_lat', 'merch_long',
         'category', 'gender', 'job', 'merchant'
     ])
+    # Reorder columns to match training
     data = data.reindex(columns=feature_names)
-    
+
     pred = model.predict(data)[0]
     prob = model.predict_proba(data)[0][1]
-    
+
+    # Show result nicely
     if pred == 1:
         st.error(f"⚠️ Transaction predicted as **FRAUD**! (probability: {prob*100:.1f}%)")
     else:
         st.success(f"✅ Transaction predicted as **NOT fraud** (probability: {prob*100:.1f}%)")
 
-# Inject footer HTML
-try:
-    with open('templates/footer.html', 'r', encoding='utf-8') as f:
-        footer_html = f.read()
-    st.markdown(footer_html, unsafe_allow_html=True)
-except FileNotFoundError:
-    st.error("Footer file not found. Please check the file path.")
-except Exception as e:
-    st.error(f"An error occurred: {e}")
+# ✅ Footer (simple)
+st.markdown("""
+<footer style="text-align:center; font-size:14px; color:#95a5a6; margin:40px 0;">
+Built by Akarsh Yadav 🚀
+</footer>
+""", unsafe_allow_html=True)
