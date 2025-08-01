@@ -2,29 +2,37 @@
 <style>
     html, body {
         font-family: 'Roboto', sans-serif;
-        background-color: #f6f9fc;
+        background-color: #f4f8fb;
+        margin: 0;
+        padding: 0;
     }
-    .title {
+    .hero {
         text-align: center;
-        font-size: 36px;
-        font-weight: 700;
-        color: #2c3e50;
-        margin-top: 20px;
-        margin-bottom: 5px;
+        padding: 50px 20px 30px 20px;
+        background: linear-gradient(90deg, #2c3e50, #2980b9);
+        color: white;
+        border-radius: 0 0 20px 20px;
     }
-    .subtitle {
-        text-align: center;
+    .hero h1 {
+        font-size: 38px;
+        margin-bottom: 10px;
+    }
+    .hero p {
         font-size: 18px;
-        color: #7f8c8d;
-        margin-bottom: 30px;
+        color: #d1dce5;
+        margin: 0;
     }
     .card {
-        background-color: #ffffff;
+        background-color: white;
         padding: 25px;
+        margin: 30px auto;
+        width: 90%;
+        max-width: 800px;
         border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 </style>
-<div class="title">💳 Fraud Detection Dashboard</div>
-<div class="subtitle">Predict credit card fraud with a LightGBM model (SMOTE balanced)</div>
+<div class="hero">
+    <h1>💳 Fraud Detection Dashboard</h1>
+    <p>Predict fraudulent transactions instantly using AI-powered LightGBM model</p>
+</div>
