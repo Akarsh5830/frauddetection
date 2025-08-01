@@ -1104,9 +1104,4 @@ elif page == "⚙️ Settings":
     </div>
     """, unsafe_allow_html=True)
 
-    # Success message about the fix
-    st.markdown("""
-    <div class="success-indicator fade-in">
-        ✅ <strong>Fixed!</strong> All feature shape issues have been resolved. The model now receives all 13 required features in the correct order.
-    </div>
-    """, unsafe_allow_html=True)
+    
