@@ -447,7 +447,6 @@ elif page == "🔍 Manual Prediction":
                     'gender': gender,
                     'lat': 40.7128,
                     'long': -74.0060,
-                    'long': long,
                     'city_pop': city_pop,
                     'job': job,
                     'unix_time': unix_time,
