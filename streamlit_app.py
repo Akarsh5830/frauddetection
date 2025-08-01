@@ -105,17 +105,20 @@ st.markdown("""
     .main-header h1 {
         color: white;
         font-size: 3rem;
-        font-weight: 700;
+        font-weight: 800;
         text-align: center;
         margin: 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        letter-spacing: 1px;
     }
     
     .main-header p {
-        color: rgba(255,255,255,0.9);
+        color: rgba(255,255,255,0.95);
         text-align: center;
         font-size: 1.2rem;
+        font-weight: 500;
         margin: 0.5rem 0 0 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
     }
     
     /* Card styling */
@@ -288,9 +291,9 @@ job_names = le_job.classes_.tolist()
 
 # Sidebar navigation with improved styling
 st.sidebar.markdown("""
-<div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-    <h2 style="color: white; margin-bottom: 0.5rem; font-size: 1.5rem;">🛡️ FraudGuard AI</h2>
-    <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 0.9rem;">Advanced Fraud Detection</p>
+<div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%); border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1);">
+    <h2 style="color: white; margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🛡️ FraudGuard AI</h2>
+    <p style="color: rgba(255,255,255,0.95); margin: 0; font-size: 0.9rem; font-weight: 500; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Advanced Fraud Detection</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -366,8 +369,8 @@ if page == "🏠 Dashboard":
     # Main header
     st.markdown("""
     <div class="main-header fade-in">
-        <h1>🛡️ FraudGuard AI</h1>
-        <p>Advanced Machine Learning-Powered Credit Card Fraud Detection System</p>
+        <h1 style="text-shadow: 3px 3px 6px rgba(0,0,0,0.4); font-weight: 800;">🛡️ FraudGuard AI</h1>
+        <p style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3); font-weight: 500;">Advanced Machine Learning-Powered Credit Card Fraud Detection System</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -410,15 +413,7 @@ if page == "🏠 Dashboard":
         </div>
         """, unsafe_allow_html=True)
     
-    # Quick start section
-    st.markdown("""
-    <div class="input-card fade-in">
-        <h2 style="color: #2c3e50; margin-bottom: 1rem;">🚀 Get Started</h2>
-        <p style="color: #34495e; font-size: 1.1rem; margin-bottom: 2rem;">
-            Enter transaction details manually or upload a CSV file for batch analysis.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+
     
     # Features section
     col1, col2 = st.columns(2)
@@ -1198,3 +1193,4 @@ elif page == "⚙️ Settings":
     </div>
     """, unsafe_allow_html=True)
 
+    
