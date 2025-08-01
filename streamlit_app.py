@@ -438,8 +438,9 @@ elif page == "🔍 Manual Prediction":
         
         if submitted:
             try:
+                
                 # Create input data with only the specified features
-               input_data = {
+                 input_data = {
                'cc_num': 1234567812345678,  # dummy value
                'merchant': merchant,
                'category': category,
