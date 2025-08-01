@@ -275,27 +275,33 @@ if page == "🏠 Dashboard":
     
     with col2:
         st.markdown("""
-        <div class="result-card">
-            <h3 style="color: #667eea; margin-bottom: 1rem;">📈 Model Performance</h3>
-            <div style="margin-bottom: 1rem;">
-                <p style="margin: 0.5rem 0; color: #34495e;"><strong>Precision:</strong> 0.99</p>
-                <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
-                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 99%; height: 100%; border-radius: 10px;"></div>
-                </div>
-            </div>
-            <div style="margin-bottom: 1rem;">
-                <p style="margin: 0.5rem 0; color: #34495e;"><strong>Recall:</strong> 0.99</p>
-                <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
-                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 99%; height: 100%; border-radius: 10px;"></div>
-                </div>
-            </div>
-            <div style="margin-bottom: 1rem;">
-                <p style="margin: 0.5rem 0; color: #34495e;"><strong>F1-Score:</strong> 0.99</p>
-                <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
-                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 99%; height: 100%; border-radius: 10px;"></div>
-                </div>
-            </div>
-        </div>
+                 <div class="result-card">
+             <h3 style="color: #667eea; margin-bottom: 1rem;">📈 Model Performance</h3>
+             <div style="margin-bottom: 1rem;">
+                 <p style="margin: 0.5rem 0; color: #34495e;"><strong>Precision (Fraud):</strong> 0.27</p>
+                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
+                     <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 27%; height: 100%; border-radius: 10px;"></div>
+                 </div>
+             </div>
+             <div style="margin-bottom: 1rem;">
+                 <p style="margin: 0.5rem 0; color: #34495e;"><strong>Recall (Fraud):</strong> 0.72</p>
+                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
+                     <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 72%; height: 100%; border-radius: 10px;"></div>
+                 </div>
+             </div>
+             <div style="margin-bottom: 1rem;">
+                 <p style="margin: 0.5rem 0; color: #34495e;"><strong>F1-Score (Fraud):</strong> 0.39</p>
+                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
+                     <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 39%; height: 100%; border-radius: 10px;"></div>
+                 </div>
+             </div>
+             <div style="margin-bottom: 1rem;">
+                 <p style="margin: 0.5rem 0; color: #34495e;"><strong>Overall Accuracy:</strong> 0.99</p>
+                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
+                     <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 99%; height: 100%; border-radius: 10px;"></div>
+                 </div>
+             </div>
+         </div>
         """, unsafe_allow_html=True)
 
 elif page == "🔍 Manual Prediction":
@@ -342,12 +348,12 @@ elif page == "🔍 Manual Prediction":
                 help="Select the transaction category"
             )
             
-            # Merchant
-            merchant = st.text_input(
-                "Merchant Name",
-                placeholder="e.g., fraud_Rippin, Kub and Mann",
-                help="Enter the merchant name"
-            )
+                         # Merchant
+             merchant = st.text_input(
+                 "Merchant Name",
+                 placeholder="e.g., fraud_Rippin, Kub and Mann",
+                 help="Enter the merchant name (e.g., fraud_Rippin)"
+             )
             
             # Unix time
             unix_time = st.number_input(
@@ -468,9 +474,9 @@ elif page == "🔍 Manual Prediction":
                     df_input['job'] = le_job.transform(df_input['job'])
                     df_input['merchant'] = le_merchant.transform(df_input['merchant'])
                     
-                    # Ensure correct column order (only the features we're using)
-                    required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
-                    df_input = df_input[required_features]
+                                         # Use only the specified features for prediction
+                     required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+                     df_input = df_input[required_features]
                     
                     # Make prediction
                     with st.spinner("🔄 Analyzing transaction..."):
@@ -620,9 +626,9 @@ elif page == "📊 Batch Analysis":
                 df['job'] = le_job.transform(df['job'])
                 df['merchant'] = le_merchant.transform(df['merchant'])
                 
-                # Use only the specified features
-                required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
-                X_input = df[required_features]
+                                 # Use only the specified features for prediction
+                 required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+                 X_input = df[required_features]
                 
                 # Make predictions
                 probs = model.predict_proba(X_input)[:,1]
@@ -756,21 +762,22 @@ elif page == "⚙️ Settings":
     </div>
     """, unsafe_allow_html=True)
     
-    feature_descriptions = {
-        'merchant': 'Merchant name',
-        'category': 'Transaction category',
-        'amt': 'Transaction amount',
-        'gender': 'Customer gender',
-        'lat': 'Customer latitude',
-        'long': 'Customer longitude',
-        'city_pop': 'City population',
-        'job': 'Customer job title',
-        'unix_time': 'Transaction timestamp',
-        'merch_lat': 'Merchant latitude',
-        'merch_long': 'Merchant longitude'
-    }
-    
-    required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+         # Use only the specified features for prediction
+     feature_descriptions = {
+         'merchant': 'Merchant name',
+         'category': 'Transaction category',
+         'amt': 'Transaction amount',
+         'gender': 'Customer gender',
+         'lat': 'Customer latitude',
+         'long': 'Customer longitude',
+         'city_pop': 'City population',
+         'job': 'Customer job title',
+         'unix_time': 'Transaction timestamp',
+         'merch_lat': 'Merchant latitude',
+         'merch_long': 'Merchant longitude'
+     }
+     
+     required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
     
     feature_df = pd.DataFrame([
         {'Feature': feat, 'Description': feature_descriptions.get(feat, 'N/A')}
