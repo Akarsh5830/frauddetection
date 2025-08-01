@@ -1224,14 +1224,15 @@ elif page == "⚙️ Settings":
         threshold = new_threshold
     
     # Model information
-    st.markdown("""
+    current_date = datetime.now().strftime("%B %d, %Y")
+    st.markdown(f"""
     <div class="result-card fade-in">
         <h3 style="color: #667eea; margin-bottom: 1rem;">📋 Model Information</h3>
         <div style="background: rgba(102, 126, 234, 0.1); padding: 1rem; border-radius: 10px; border-left: 4px solid #667eea;">
             <p style="margin: 0.5rem 0; color: #2c3e50; font-weight: 600;"><strong>Model Type:</strong> LightGBM Gradient Boosting</p>
             <p style="margin: 0.5rem 0; color: #2c3e50; font-weight: 600;"><strong>Training Date:</strong> July 2025</p>
             <p style="margin: 0.5rem 0; color: #2c3e50; font-weight: 600;"><strong>Features Used:</strong> 13 available features</p>
-            <p style="margin: 0.5rem 0; color: #2c3e50; font-weight: 600;"><strong>Last Updated:</strong> {datetime.now().strftime("%B %d, %Y")}</p>
+            <p style="margin: 0.5rem 0; color: #2c3e50; font-weight: 600;"><strong>Last Updated:</strong> {current_date}</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
