@@ -439,19 +439,22 @@ elif page == "🔍 Manual Prediction":
         if submitted:
             try:
                 # Create input data with only the specified features
-                input_data = {
-                    'merchant': merchant,
-                    'category': category,
-                    'amt': amt,
-                    'gender': gender,
-                    'lat': lat,
-                    'long': long,
-                    'city_pop': city_pop,
-                    'job': job,
-                    'unix_time': unix_time,
-                    'merch_lat': merch_lat,
-                    'merch_long': merch_long
-                }
+               input_data = {
+               'cc_num': 1234567812345678,  # dummy value
+               'merchant': merchant,
+               'category': category,
+               'amt': amt,
+               'gender': gender,
+               'zip': 10001,                # dummy value
+               'lat': lat,
+               'long': long,
+               'city_pop': city_pop,
+               'job': job,
+               'unix_time': unix_time,
+               'merch_lat': merch_lat,
+                'merch_long': merch_long
+}
+
                 
                 # Convert to DataFrame
                 df_input = pd.DataFrame([input_data])
