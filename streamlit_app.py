@@ -445,6 +445,7 @@ elif page == "🔍 Manual Prediction":
                     'category': category,
                     'amt': amt,
                     'gender': gender,
+                    'zip': 10001,  # dummy zip code
                     'lat': 40.7128,
                     'long': -74.0060,
                     'city_pop': city_pop,
