@@ -45,6 +45,47 @@ st.markdown("""
         backdrop-filter: blur(10px);
         background: rgba(255, 255, 255, 0.95);
         border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    /* Better text contrast for all content */
+    .main .block-container p {
+        color: #2c3e50;
+        font-weight: 500;
+    }
+    
+    .main .block-container strong {
+        color: #1a252f;
+        font-weight: 600;
+    }
+    
+    /* Improve table readability */
+    .dataframe {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .dataframe th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-weight: 600;
+        padding: 12px;
+    }
+    
+    .dataframe td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #e1e8ed;
+        color: #2c3e50;
+    }
+    
+    .dataframe tr:nth-child(even) {
+        background-color: rgba(102, 126, 234, 0.05);
+    }
+    
+    .dataframe tr:hover {
+        background-color: rgba(102, 126, 234, 0.1);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -1056,10 +1097,12 @@ elif page == "⚙️ Settings":
     st.markdown("""
     <div class="result-card fade-in">
         <h3 style="color: #667eea; margin-bottom: 1rem;">📋 Model Information</h3>
-        <p><strong>Model Type:</strong> LightGBM Gradient Boosting</p>
-        <p><strong>Training Date:</strong> December 2024</p>
-        <p><strong>Features Used:</strong> 13 available features</p>
-        <p><strong>Last Updated:</strong> {datetime.now().strftime("%B %d, %Y")}</p>
+        <div style="background: rgba(102, 126, 234, 0.1); padding: 1rem; border-radius: 10px; border-left: 4px solid #667eea;">
+            <p style="margin: 0.5rem 0; color: #2c3e50; font-weight: 600;"><strong>Model Type:</strong> LightGBM Gradient Boosting</p>
+            <p style="margin: 0.5rem 0; color: #2c3e50; font-weight: 600;"><strong>Training Date:</strong> July 2025</p>
+            <p style="margin: 0.5rem 0; color: #2c3e50; font-weight: 600;"><strong>Features Used:</strong> 13 available features</p>
+            <p style="margin: 0.5rem 0; color: #2c3e50; font-weight: 600;"><strong>Last Updated:</strong> {datetime.now().strftime("%B %d, %Y")}</p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1070,7 +1113,7 @@ elif page == "⚙️ Settings":
     </div>
     """, unsafe_allow_html=True)
     
-    # All features used by the model
+    # Feature descriptions with better styling
     feature_descriptions = {
         'cc_num': 'Credit card number (🔒 Privacy Protected)',
         'merchant': 'Merchant name',
@@ -1090,18 +1133,68 @@ elif page == "⚙️ Settings":
     # All features used by the model
     available_features = feature_names
     
-    feature_df = pd.DataFrame([
-        {'Feature': feat, 'Description': feature_descriptions.get(feat, 'N/A')}
-        for feat in available_features
-    ])
+    # Create a styled feature table
+    feature_data = []
+    for i, feat in enumerate(available_features, 1):
+        feature_data.append({
+            'No.': i,
+            'Feature': feat,
+            'Description': feature_descriptions.get(feat, 'N/A')
+        })
     
-    st.table(feature_df)
+    feature_df = pd.DataFrame(feature_data)
+    
+    # Display with better styling
+    st.markdown("""
+    <div style="background: rgba(255, 255, 255, 0.95); padding: 1rem; border-radius: 10px; border: 1px solid rgba(102, 126, 234, 0.2);">
+    """, unsafe_allow_html=True)
+    
+    # Custom table styling
+    st.markdown("""
+    <style>
+        .feature-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .feature-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            padding: 12px;
+            text-align: left;
+        }
+        .feature-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e1e8ed;
+        }
+        .feature-table tr:nth-child(even) {
+            background-color: rgba(102, 126, 234, 0.05);
+        }
+        .feature-table tr:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    st.dataframe(
+        feature_df,
+        use_container_width=True,
+        hide_index=True
+    )
+    
+    st.markdown("</div>", unsafe_allow_html=True)
     
     # Add note about privacy protection
     st.markdown("""
     <div class="success-indicator fade-in">
-        🔒 <strong>Privacy Protected:</strong> Sensitive personal information (credit card number, ZIP code, customer location) is automatically handled with placeholder values to protect user privacy while maintaining model functionality.
+        <div style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); padding: 1.5rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);">
+            <h4 style="color: white; margin-bottom: 1rem; text-align: center; font-size: 1.2rem;">🔒 Privacy Protection Active</h4>
+            <p style="color: white; margin: 0; text-align: center; font-size: 1rem; line-height: 1.5;">
+                <strong>Sensitive personal information</strong> (credit card number, ZIP code, customer location) is automatically handled with placeholder values to protect user privacy while maintaining model functionality.
+            </p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
-    
