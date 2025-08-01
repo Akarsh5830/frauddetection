@@ -171,6 +171,10 @@ def load_all():
         le_gender = joblib.load('le_gender.pkl')
         le_job = joblib.load('le_job.pkl')
         le_merchant = joblib.load('le_merchant.pkl')
+        merchant_names = list(le_merchant.classes_)
+        category_names = list(le_cat.classes_)
+        job_names = list(le_job.classes_)
+
         with open('feature_names.json') as f:
             feature_names = json.load(f)
         with open('merchant_names.json') as f:
@@ -340,10 +344,6 @@ elif page == "🔍 Manual Prediction":
                 help="Enter the transaction amount"
             )
             
-            # Category
-            categories = ['misc_net', 'grocery_pos', 'entertainment', 'gas_transport', 
-                         'misc_pos', 'grocery_net', 'shopping_net', 'shopping_pos', 
-                         'food_dining', 'personal_care', 'health_fitness', 'travel']
             category = st.selectbox(
                 "Transaction Category",
                 categories,
@@ -374,12 +374,7 @@ elif page == "🔍 Manual Prediction":
                 ["M", "F"],
                 help="Select customer gender"
             )
-            
-            # Job
-            jobs = ['Psychologist, counselling', 'Special educational needs teacher',
-                   'Nature conservation officer', 'Patent attorney', 'Transport planner',
-                   'Arboriculturist', 'Designer, multimedia', 'Public affairs consultant',
-                   'Pathologist', 'Dance movement psychotherapist']
+           
             job = st.selectbox(
                 "Job Title",
                 jobs,
