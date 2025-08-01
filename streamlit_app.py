@@ -3,7 +3,7 @@ import joblib
 import json
 import pandas as pd
 
-# ✅ Load model & encoders (cached)
+# Load model & encoders (cached)
 @st.cache_resource
 def load_all():
     model = joblib.load('lgb_model.pkl')
@@ -17,60 +17,13 @@ def load_all():
 
 model, le_cat, le_gender, le_job, le_merchant, feature_names = load_all()
 
-# ✅ Custom CSS
-st.markdown("""
-    <style>
-    body {
-        background-color: #f7f9fb;
-        color: #333333;
-        font-family: 'Segoe UI', sans-serif;
-    }
-    .title {
-        text-align: center;
-        font-size: 42px;
-        font-weight: 700;
-        color: #2c3e50;
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
-    .subtitle {
-        text-align: center;
-        font-size: 18px;
-        color: #7f8c8d;
-        margin-bottom: 40px;
-    }
-    .card {
-        background-color: white;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        margin-bottom: 20px;
-    }
-    .predict-btn {
-        background-color: #2980b9;
-        color: white;
-        padding: 12px 25px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    .predict-btn:hover {
-        background-color: #1c5f8a;
-    }
-    </style>
-""", unsafe_allow_html=True)
+# Inject header HTML
+with open('templates/header.html', 'r', encoding='utf-8') as f:
+    header_html = f.read()
+st.markdown(header_html, unsafe_allow_html=True)
 
-# ✅ Title & subtitle
-st.markdown('<div class="title">💳 Credit Card Fraud Detection App</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Model built using LightGBM on balanced data (SMOTE)</div>', unsafe_allow_html=True)
-
-# ✅ Expander for mappings
+# Show mappings inside expander
 with st.expander("ℹ️ See label mappings"):
-    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.write("**Category mapping:**")
     st.json(dict(zip(le_cat.classes_, le_cat.transform(le_cat.classes_).tolist())))
     st.write("**Gender mapping:**")
@@ -79,35 +32,32 @@ with st.expander("ℹ️ See label mappings"):
     st.json(dict(zip(le_job.classes_, le_job.transform(le_job.classes_).tolist())))
     st.write("**Merchant mapping:**")
     st.json(dict(zip(le_merchant.classes_, le_merchant.transform(le_merchant.classes_).tolist())))
-    st.markdown('</div>', unsafe_allow_html=True)
 
-# ✅ Input form inside card
+# Input card
 st.markdown('<div class="card">', unsafe_allow_html=True)
 st.subheader("📝 Input transaction details:")
 
-category_input = st.selectbox("Category", le_cat.classes_)
-gender_input = st.selectbox("Gender", le_gender.classes_)
-job_input = st.selectbox("Job", le_job.classes_)
-merchant_input = st.selectbox("Merchant", le_merchant.classes_)
-
-amt = st.number_input("Transaction Amount", min_value=0.0, value=100.0)
-city_pop = st.number_input("City Population", min_value=0)
-unix_time = st.number_input("Transaction Unix Time", min_value=0)
-merch_lat = st.number_input("Merchant Latitude", format="%.6f")
-merch_long = st.number_input("Merchant Longitude", format="%.6f")
+col1, col2 = st.columns(2)
+with col1:
+    category_input = st.selectbox("Category", le_cat.classes_)
+    job_input = st.selectbox("Job", le_job.classes_)
+    amt = st.number_input("Transaction Amount", min_value=0.0, value=100.0)
+    unix_time = st.number_input("Transaction Unix Time", min_value=0)
+with col2:
+    gender_input = st.selectbox("Gender", le_gender.classes_)
+    merchant_input = st.selectbox("Merchant", le_merchant.classes_)
+    city_pop = st.number_input("City Population", min_value=0)
+    merch_lat = st.number_input("Merchant Latitude", format="%.6f")
+    merch_long = st.number_input("Merchant Longitude", format="%.6f")
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ✅ Prediction button styled
-predict_clicked = st.button("🔍 Predict Fraud", key="predict", help="Click to predict if the transaction is fraud")
-
-if predict_clicked:
-    # Encode text inputs
+# Predict button
+if st.button("🔍 Predict Fraud"):
     category_enc = le_cat.transform([category_input])[0]
     gender_enc = le_gender.transform([gender_input])[0]
     job_enc = le_job.transform([job_input])[0]
     merchant_enc = le_merchant.transform([merchant_input])[0]
 
-    # Build input data
     data = pd.DataFrame([[
         amt, city_pop, unix_time, merch_lat, merch_long,
         category_enc, gender_enc, job_enc, merchant_enc
@@ -115,16 +65,17 @@ if predict_clicked:
         'amt', 'city_pop', 'unix_time', 'merch_lat', 'merch_long',
         'category', 'gender', 'job', 'merchant'
     ])
-
-    # Adjust column order
     data = data.reindex(columns=feature_names)
 
     pred = model.predict(data)[0]
+    prob = model.predict_proba(data)[0][1]
 
     if pred == 1:
-        st.error("⚠️ Transaction is predicted to be **FRAUD**!")
+        st.error(f"⚠️ Transaction predicted as **FRAUD**! (probability: {prob*100:.1f}%)")
     else:
-        st.success("✅ Transaction looks **legit / not fraud**.")
+        st.success(f"✅ Transaction predicted as **NOT fraud** (probability: {prob*100:.1f}%)")
 
-# ✅ Footer
-st.markdown('<div class="subtitle">Built by Akarsh Yadav 🚀</div>', unsafe_allow_html=True)
+# Inject footer HTML
+with open('templates/footer.html', 'r', encoding='utf-8') as f:
+    footer_html = f.read()
+st.markdown(footer_html, unsafe_allow_html=True)
