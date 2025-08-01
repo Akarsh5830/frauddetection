@@ -176,36 +176,40 @@ st.markdown("""
     
     /* Improve sidebar text visibility and dropdown functionality */
     .css-1d391kg .stSelectbox > div > div > div {
-        background-color: rgba(255, 255, 255, 0.25);
-        color: white !important;
-        border: 2px solid rgba(255, 255, 255, 0.4);
-        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.3) !important;
+        color: #1a252f !important;
+        border: 2px solid rgba(0, 0, 0, 0.2) !important;
+        border-radius: 8px !important;
         cursor: pointer !important;
-        transition: all 0.3s ease;
+        transition: all 0.3s ease !important;
+        min-height: 40px !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 8px 12px !important;
     }
     
     .css-1d391kg .stSelectbox > div > div > div:hover {
-        background-color: rgba(255, 255, 255, 0.35);
-        border-color: rgba(255, 255, 255, 0.6);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        background-color: rgba(255, 255, 255, 0.5) !important;
+        border-color: rgba(0, 0, 0, 0.4) !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
     }
     
     .css-1d391kg .stSelectbox > div > div > div:active {
-        transform: translateY(0);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        transform: translateY(0) !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
     }
     
     .css-1d391kg .stSelectbox > div > div > div > div {
-        color: white !important;
-        font-weight: 700;
-        font-size: 1rem;
+        color: #1a252f !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
     }
     
     .css-1d391kg .stSelectbox > div > div > div > div > div {
-        color: white !important;
-        font-weight: 700;
-        font-size: 1rem;
+        color: #1a252f !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
     }
     
     .css-1d391kg .stExpander > div > div {
@@ -217,31 +221,54 @@ st.markdown("""
     
     /* Fix dropdown options visibility and functionality */
     .css-1d391kg .stSelectbox > div > div > div > div > div > div {
-        background-color: #1a252f !important;
-        color: white !important;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: 6px;
-        margin: 2px 0;
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        color: #1a252f !important;
+        border: 1px solid rgba(0, 0, 0, 0.2) !important;
+        border-radius: 6px !important;
+        margin: 2px 0 !important;
         cursor: pointer !important;
-        transition: all 0.2s ease;
+        transition: all 0.2s ease !important;
+        padding: 10px 12px !important;
+        min-height: 20px !important;
+        font-weight: 600 !important;
     }
     
     .css-1d391kg .stSelectbox > div > div > div > div > div > div:hover {
-        background-color: #2c3e50 !important;
-        border-color: rgba(255, 255, 255, 0.6);
-        transform: translateX(2px);
+        background-color: rgba(102, 126, 234, 0.1) !important;
+        border-color: rgba(102, 126, 234, 0.3) !important;
+        transform: translateX(2px) !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }
     
     /* Ensure dropdown menu is clickable */
     .css-1d391kg .stSelectbox > div > div > div > div > div {
         z-index: 1000 !important;
         position: relative !important;
+        max-height: 300px !important;
+        overflow-y: auto !important;
+        background: rgba(255, 255, 255, 0.98) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
     }
     
     /* Make sure the dropdown container is properly positioned */
     .css-1d391kg .stSelectbox {
         position: relative !important;
         z-index: 999 !important;
+        margin-bottom: 10px !important;
+    }
+    
+    /* Improve click area and responsiveness */
+    .css-1d391kg .stSelectbox > div > div > div {
+        pointer-events: auto !important;
+        user-select: none !important;
+    }
+    
+    /* Add focus states for better accessibility */
+    .css-1d391kg .stSelectbox > div > div > div:focus-within {
+        outline: 2px solid rgba(102, 126, 234, 0.6) !important;
+        outline-offset: 2px !important;
     }
     
     /* Improve sidebar text contrast */
