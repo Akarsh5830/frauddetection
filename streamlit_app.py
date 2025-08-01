@@ -171,8 +171,6 @@ def load_all():
         le_gender = joblib.load('le_gender.pkl')
         le_job = joblib.load('le_job.pkl')
         le_merchant = joblib.load('le_merchant.pkl')
-        job_names = list(le_job.classes_)
-        category_names = list(le_cat.classes_)
         with open('feature_names.json') as f:
             feature_names = json.load(f)
         with open('merchant_names.json') as f:
@@ -342,10 +340,14 @@ elif page == "🔍 Manual Prediction":
                 help="Enter the transaction amount"
             )
             
+            # Category
+            categories = ['misc_net', 'grocery_pos', 'entertainment', 'gas_transport', 
+                         'misc_pos', 'grocery_net', 'shopping_net', 'shopping_pos', 
+                         'food_dining', 'personal_care', 'health_fitness', 'travel']
             category = st.selectbox(
-            "📂 Transaction Category",
-            category_names,
-            help="Select the transaction category"
+                "Transaction Category",
+                categories,
+                help="Select the transaction category"
             )
             
             # Merchant
@@ -373,12 +375,15 @@ elif page == "🔍 Manual Prediction":
                 help="Select customer gender"
             )
             
-            # In your form:
+            # Job
+            jobs = ['Psychologist, counselling', 'Special educational needs teacher',
+                   'Nature conservation officer', 'Patent attorney', 'Transport planner',
+                   'Arboriculturist', 'Designer, multimedia', 'Public affairs consultant',
+                   'Pathologist', 'Dance movement psychotherapist']
             job = st.selectbox(
-            "🏢 Job Title",
-            job_names,
-            help="Select customer job title"
-                
+                "Job Title",
+                jobs,
+                help="Select customer job title"
             )
             
             # Note: Customer location not available in real data
@@ -424,20 +429,23 @@ elif page == "🔍 Manual Prediction":
                 step=0.0001,
                 help="Enter merchant location longitude"
             )
-            submitted = st.form_submit_button("🔍 Analyze Transaction")
+        
+        # Submit button
+        submitted = st.form_submit_button(
+            "🔍 Analyze Transaction",
+            use_container_width=True
+        )
         
         if submitted:
             try:
                 # Create input data with only the specified features
                 input_data = {
-                    'cc_num': 1234567812345678,
                     'merchant': merchant,
                     'category': category,
                     'amt': amt,
                     'gender': gender,
-                    'zip': 10001,  # dummy zip code
-                    'lat': 40.7128,
-                    'long': -74.0060,
+                    'lat': lat,
+                    'long': long,
                     'city_pop': city_pop,
                     'job': job,
                     'unix_time': unix_time,
@@ -453,8 +461,10 @@ elif page == "🔍 Manual Prediction":
                 df_input['gender'] = le_gender.transform(df_input['gender'])
                 df_input['job'] = le_job.transform(df_input['job'])
                 df_input['merchant'] = le_merchant.transform(df_input['merchant'])
-                df_input = df_input[feature_names]
-
+                
+                # Use only the specified features for prediction
+                required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+                df_input = df_input[required_features]
                 
                 # Make prediction
                 with st.spinner("🔄 Analyzing transaction..."):
