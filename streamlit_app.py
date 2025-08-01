@@ -173,15 +173,17 @@ def load_all():
         le_merchant = joblib.load('le_merchant.pkl')
         with open('feature_names.json') as f:
             feature_names = json.load(f)
+        with open('merchant_names.json') as f:
+            merchant_names = json.load(f)
         try:
             with open('threshold.txt') as f:
                 threshold = float(f.read())
         except:
             threshold = 0.5
-        return model, le_cat, le_gender, le_job, le_merchant, feature_names, threshold
+        return model, le_cat, le_gender, le_job, le_merchant, feature_names, merchant_names, threshold
 
 # Load models
-model, le_cat, le_gender, le_job, le_merchant, feature_names, threshold = load_all()
+model, le_cat, le_gender, le_job, le_merchant, feature_names, merchant_names, threshold = load_all()
 
 # Sidebar navigation
 st.sidebar.markdown("""
@@ -349,10 +351,10 @@ elif page == "🔍 Manual Prediction":
             )
             
             # Merchant
-            merchant = st.text_input(
+            merchant = st.selectbox(
                 "Merchant Name",
-                placeholder="e.g., fraud_Rippin, Kub and Mann",
-                help="Enter the merchant name (e.g., fraud_Rippin)"
+                merchant_names,
+                help="Select the merchant name from the available options (693 merchants available)"
             )
             
             # Unix time
@@ -435,117 +437,114 @@ elif page == "🔍 Manual Prediction":
         )
         
         if submitted:
-            if merchant:
-                try:
-                    # Create input data with only the specified features
-                    input_data = {
-                        'merchant': merchant,
-                        'category': category,
-                        'amt': amt,
-                        'gender': gender,
-                        'lat': lat,
-                        'long': long,
-                        'city_pop': city_pop,
-                        'job': job,
-                        'unix_time': unix_time,
-                        'merch_lat': merch_lat,
-                        'merch_long': merch_long
-                    }
+            try:
+                # Create input data with only the specified features
+                input_data = {
+                    'merchant': merchant,
+                    'category': category,
+                    'amt': amt,
+                    'gender': gender,
+                    'lat': lat,
+                    'long': long,
+                    'city_pop': city_pop,
+                    'job': job,
+                    'unix_time': unix_time,
+                    'merch_lat': merch_lat,
+                    'merch_long': merch_long
+                }
+                
+                # Convert to DataFrame
+                df_input = pd.DataFrame([input_data])
+                
+                # Encode categorical variables
+                df_input['category'] = le_cat.transform(df_input['category'])
+                df_input['gender'] = le_gender.transform(df_input['gender'])
+                df_input['job'] = le_job.transform(df_input['job'])
+                df_input['merchant'] = le_merchant.transform(df_input['merchant'])
+                
+                # Use only the specified features for prediction
+                required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+                df_input = df_input[required_features]
+                
+                # Make prediction
+                with st.spinner("🔄 Analyzing transaction..."):
+                    probability = model.predict_proba(df_input)[0][1]
+                    prediction = 1 if probability >= threshold else 0
+                
+                # Display results
+                st.markdown("""
+                <div class="result-card fade-in">
+                    <h3 style="color: #667eea; margin-bottom: 1rem;">🎯 Analysis Results</h3>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                col_result1, col_result2 = st.columns(2)
+                
+                with col_result1:
+                    st.metric(
+                        "Fraud Probability",
+                        f"{probability:.3f}",
+                        delta=f"{probability:.1%} risk"
+                    )
                     
-                    # Convert to DataFrame
-                    df_input = pd.DataFrame([input_data])
+                    # Risk level indicator
+                    if probability >= 0.8:
+                        st.markdown("""
+                        <div class="warning-indicator fade-in">
+                            🚨 HIGH RISK - Likely Fraudulent
+                        </div>
+                        """, unsafe_allow_html=True)
+                    elif probability >= 0.5:
+                        st.markdown("""
+                        <div class="info-indicator fade-in">
+                            ⚠️ MEDIUM RISK - Suspicious Activity
+                        </div>
+                        """, unsafe_allow_html=True)
+                    else:
+                        st.markdown("""
+                        <div class="success-indicator fade-in">
+                            ✅ LOW RISK - Likely Legitimate
+                        </div>
+                        """, unsafe_allow_html=True)
+                
+                with col_result2:
+                    st.metric(
+                        "Prediction",
+                        "FRAUD" if prediction == 1 else "LEGITIMATE",
+                        delta="Model Decision"
+                    )
                     
-                    # Encode categorical variables
-                    df_input['category'] = le_cat.transform(df_input['category'])
-                    df_input['gender'] = le_gender.transform(df_input['gender'])
-                    df_input['job'] = le_job.transform(df_input['job'])
-                    df_input['merchant'] = le_merchant.transform(df_input['merchant'])
-                    
-                    # Use only the specified features for prediction
-                    required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
-                    df_input = df_input[required_features]
-                    
-                    # Make prediction
-                    with st.spinner("🔄 Analyzing transaction..."):
-                        probability = model.predict_proba(df_input)[0][1]
-                        prediction = 1 if probability >= threshold else 0
-                    
-                    # Display results
-                    st.markdown("""
-                    <div class="result-card fade-in">
-                        <h3 style="color: #667eea; margin-bottom: 1rem;">🎯 Analysis Results</h3>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    col_result1, col_result2 = st.columns(2)
-                    
-                    with col_result1:
-                        st.metric(
-                            "Fraud Probability",
-                            f"{probability:.3f}",
-                            delta=f"{probability:.1%} risk"
-                        )
-                        
-                        # Risk level indicator
-                        if probability >= 0.8:
-                            st.markdown("""
-                            <div class="warning-indicator fade-in">
-                                🚨 HIGH RISK - Likely Fraudulent
-                            </div>
-                            """, unsafe_allow_html=True)
-                        elif probability >= 0.5:
-                            st.markdown("""
-                            <div class="info-indicator fade-in">
-                                ⚠️ MEDIUM RISK - Suspicious Activity
-                            </div>
-                            """, unsafe_allow_html=True)
-                        else:
-                            st.markdown("""
-                            <div class="success-indicator fade-in">
-                                ✅ LOW RISK - Likely Legitimate
-                            </div>
-                            """, unsafe_allow_html=True)
-                    
-                    with col_result2:
-                        st.metric(
-                            "Prediction",
-                            "FRAUD" if prediction == 1 else "LEGITIMATE",
-                            delta="Model Decision"
-                        )
-                        
-                        # Confidence level
-                        confidence = max(probability, 1 - probability)
-                        st.metric(
-                            "Confidence",
-                            f"{confidence:.1%}",
-                            delta="Model Confidence"
-                        )
-                    
-                    # Detailed analysis
-                    st.markdown("""
-                    <div class="result-card fade-in">
-                        <h3 style="color: #667eea; margin-bottom: 1rem;">📊 Transaction Summary</h3>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    summary_data = {
-                        'Field': ['Amount', 'Category', 'Merchant', 'Location Distance', 'Time'],
-                        'Value': [
-                            f"${amt:.2f}",
-                            category.replace('_', ' ').title(),
-                            merchant,
-                            f"{((lat - merch_lat)**2 + (long - merch_long)**2)**0.5:.2f}°",
-                            datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d %H:%M:%S')
-                        ]
-                    }
-                    
-                    st.table(pd.DataFrame(summary_data))
-                    
-                except Exception as e:
-                    st.error(f"❌ Error processing transaction: {str(e)}")
-                    st.info("Please check your input values and try again.")
-            else:
-                st.warning("⚠️ Please fill in the Merchant Name field.")
+                    # Confidence level
+                    confidence = max(probability, 1 - probability)
+                    st.metric(
+                        "Confidence",
+                        f"{confidence:.1%}",
+                        delta="Model Confidence"
+                    )
+                
+                # Detailed analysis
+                st.markdown("""
+                <div class="result-card fade-in">
+                    <h3 style="color: #667eea; margin-bottom: 1rem;">📊 Transaction Summary</h3>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                summary_data = {
+                    'Field': ['Amount', 'Category', 'Merchant', 'Location Distance', 'Time'],
+                    'Value': [
+                        f"${amt:.2f}",
+                        category.replace('_', ' ').title(),
+                        merchant,
+                        f"{((lat - merch_lat)**2 + (long - merch_long)**2)**0.5:.2f}°",
+                        datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d %H:%M:%S')
+                    ]
+                }
+                
+                st.table(pd.DataFrame(summary_data))
+                
+            except Exception as e:
+                st.error(f"❌ Error processing transaction: {str(e)}")
+                st.info("Please check your input values and try again.")
 
 elif page == "📊 Batch Analysis":
     st.markdown("""
