@@ -537,7 +537,7 @@ job_names = le_job.classes_.tolist()
 
 # Sidebar navigation with improved styling
 st.sidebar.markdown("""
-<div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%); border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1);">
+<div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #7FBCE2 0%, #2c3e50 100%); border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1);">
     <h2 style="color: white; margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🛡️ FraudGuard AI</h2>
     <p style="color: rgba(255,255,255,0.95); margin: 0; font-size: 0.9rem; font-weight: 500; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Advanced Fraud Detection</p>
 </div>
