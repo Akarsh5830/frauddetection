@@ -2,9 +2,6 @@ import streamlit as st
 import pandas as pd
 import joblib
 import json
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import numpy as np
 from datetime import datetime
 import time
@@ -387,20 +384,21 @@ elif page == "📊 Upload & Analyze":
             with col4:
                 st.metric("Avg. Risk Score", f"{avg_probability:.3f}")
             
-            # Risk distribution chart
-            fig = px.histogram(
-                x=probs,
-                nbins=30,
-                title="Risk Score Distribution",
-                labels={'x': 'Fraud Probability', 'y': 'Number of Transactions'},
-                color_discrete_sequence=['#667eea']
-            )
-            fig.update_layout(
-                plot_bgcolor='white',
-                paper_bgcolor='white',
-                font=dict(size=12)
-            )
-            st.plotly_chart(fig, use_container_width=True)
+            # Risk distribution chart using Streamlit's built-in charting
+            st.markdown("""
+            <div class="result-card fade-in">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">📊 Risk Score Distribution</h3>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Create histogram data
+            hist_values = np.histogram(probs, bins=30)
+            chart_data = pd.DataFrame({
+                'Risk Score': hist_values[1][:-1],
+                'Number of Transactions': hist_values[0]
+            })
+            
+            st.bar_chart(chart_data.set_index('Risk Score'))
             
             # High-risk transactions
             high_risk_threshold = 0.7
@@ -452,41 +450,33 @@ elif page == "📈 Analytics":
     </div>
     """, unsafe_allow_html=True)
     
-    # Sample trend data
+    # Sample trend data using Streamlit's built-in charting
     dates = pd.date_range(start='2024-01-01', end='2024-12-31', freq='D')
     fraud_counts = np.random.poisson(50, len(dates)) + np.sin(np.arange(len(dates)) * 0.1) * 20
     
-    fig = px.line(
-        x=dates,
-        y=fraud_counts,
-        title="Daily Fraud Detection Trend",
-        labels={'x': 'Date', 'y': 'Fraud Cases Detected'},
-        color_discrete_sequence=['#667eea']
-    )
-    fig.update_layout(
-        plot_bgcolor='white',
-        paper_bgcolor='white',
-        font=dict(size=12)
-    )
-    st.plotly_chart(fig, use_container_width=True)
+    trend_data = pd.DataFrame({
+        'Date': dates,
+        'Fraud Cases Detected': fraud_counts
+    })
+    
+    st.line_chart(trend_data.set_index('Date'))
     
     # Category analysis
+    st.markdown("""
+    <div class="result-card fade-in">
+        <h3 style="color: #667eea; margin-bottom: 1rem;">📊 Fraud Rate by Category</h3>
+    </div>
+    """, unsafe_allow_html=True)
+    
     categories = ['grocery', 'gas_transport', 'shopping_net', 'shopping_pos', 'misc_net', 'misc_pos']
     fraud_rates = [0.02, 0.05, 0.08, 0.03, 0.12, 0.04]
     
-    fig2 = px.bar(
-        x=categories,
-        y=fraud_rates,
-        title="Fraud Rate by Transaction Category",
-        labels={'x': 'Category', 'y': 'Fraud Rate'},
-        color_discrete_sequence=['#764ba2']
-    )
-    fig2.update_layout(
-        plot_bgcolor='white',
-        paper_bgcolor='white',
-        font=dict(size=12)
-    )
-    st.plotly_chart(fig2, use_container_width=True)
+    category_data = pd.DataFrame({
+        'Category': categories,
+        'Fraud Rate': fraud_rates
+    })
+    
+    st.bar_chart(category_data.set_index('Category'))
 
 elif page == "⚙️ Settings":
     st.markdown("""
