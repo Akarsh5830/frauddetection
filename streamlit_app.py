@@ -462,10 +462,8 @@ elif page == "🔍 Manual Prediction":
                 df_input['gender'] = le_gender.transform(df_input['gender'])
                 df_input['job'] = le_job.transform(df_input['job'])
                 df_input['merchant'] = le_merchant.transform(df_input['merchant'])
-                
-                # Use only the specified features for prediction
-                required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
-                df_input = df_input[required_features]
+                df_input = df_input[feature_names]
+
                 
                 # Make prediction
                 with st.spinner("🔄 Analyzing transaction..."):
