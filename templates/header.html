@@ -22,6 +22,16 @@
         color: #d1dce5;
         margin: 0;
     }
+    .info-box {
+        background-color: #ffffffee;  /* semi-transparent white */
+        color: #2c3e50;
+        max-width: 800px;
+        margin: -20px auto 30px auto;  /* pull up under hero */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        font-size: 16px;
+    }
     .card {
         background-color: white;
         padding: 25px;
@@ -32,7 +42,13 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 </style>
+
 <div class="hero">
     <h1>💳 Fraud Detection Dashboard</h1>
     <p>Predict fraudulent transactions instantly using AI-powered LightGBM model</p>
+</div>
+
+<div class="info-box">
+    ⚡ <strong>Fast and simple:</strong> Enter transaction details below and instantly see if it's likely to be fraud.<br>
+    Model trained on real data and balanced with SMOTE for better fraud detection.
 </div>
