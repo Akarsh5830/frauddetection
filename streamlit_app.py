@@ -211,7 +211,7 @@ if page == "🏠 Dashboard":
         st.markdown("""
         <div class="metric-card">
             <h3 style="color: #667eea; margin-bottom: 0.5rem;">🎯 Model Accuracy</h3>
-            <h2 style="color: #2c3e50; margin: 0;">98.7%</h2>
+            <h2 style="color: #2c3e50; margin: 0;">99.0%</h2>
             <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">LightGBM Performance</p>
         </div>
         """, unsafe_allow_html=True)
@@ -229,8 +229,8 @@ if page == "🏠 Dashboard":
         st.markdown("""
         <div class="metric-card">
             <h3 style="color: #667eea; margin-bottom: 0.5rem;">🔍 Features</h3>
-            <h2 style="color: #2c3e50; margin: 0;">13</h2>
-            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Engineered Features</p>
+            <h2 style="color: #2c3e50; margin: 0;">11</h2>
+            <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Selected Features</p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -238,7 +238,7 @@ if page == "🏠 Dashboard":
         st.markdown("""
         <div class="metric-card">
             <h3 style="color: #667eea; margin-bottom: 0.5rem;">📊 Dataset</h3>
-            <h2 style="color: #2c3e50; margin: 0;">555K+</h2>
+            <h2 style="color: #2c3e50; margin: 0;">1.3M</h2>
             <p style="color: #7f8c8d; font-size: 0.9rem; margin: 0;">Training Records</p>
         </div>
         """, unsafe_allow_html=True)
@@ -261,7 +261,6 @@ if page == "🏠 Dashboard":
         <div class="result-card">
             <h3 style="color: #667eea; margin-bottom: 1rem;">🎯 Model Features</h3>
             <ul style="color: #34495e; line-height: 2;">
-                <li>💳 Credit Card Number</li>
                 <li>🏪 Merchant Information</li>
                 <li>📂 Transaction Category</li>
                 <li>💰 Transaction Amount</li>
@@ -269,6 +268,7 @@ if page == "🏠 Dashboard":
                 <li>📍 Geographic Location</li>
                 <li>🏢 Customer Job</li>
                 <li>⏰ Transaction Time</li>
+                <li>🌍 City Population</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -278,21 +278,21 @@ if page == "🏠 Dashboard":
         <div class="result-card">
             <h3 style="color: #667eea; margin-bottom: 1rem;">📈 Model Performance</h3>
             <div style="margin-bottom: 1rem;">
-                <p style="margin: 0.5rem 0; color: #34495e;"><strong>Precision:</strong> 96.8%</p>
+                <p style="margin: 0.5rem 0; color: #34495e;"><strong>Precision:</strong> 0.99</p>
                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
-                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 96.8%; height: 100%; border-radius: 10px;"></div>
+                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 99%; height: 100%; border-radius: 10px;"></div>
                 </div>
             </div>
             <div style="margin-bottom: 1rem;">
-                <p style="margin: 0.5rem 0; color: #34495e;"><strong>Recall:</strong> 94.2%</p>
+                <p style="margin: 0.5rem 0; color: #34495e;"><strong>Recall:</strong> 0.99</p>
                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
-                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 94.2%; height: 100%; border-radius: 10px;"></div>
+                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 99%; height: 100%; border-radius: 10px;"></div>
                 </div>
             </div>
             <div style="margin-bottom: 1rem;">
-                <p style="margin: 0.5rem 0; color: #34495e;"><strong>F1-Score:</strong> 95.5%</p>
+                <p style="margin: 0.5rem 0; color: #34495e;"><strong>F1-Score:</strong> 0.99</p>
                 <div style="background: #ecf0f1; border-radius: 10px; height: 8px;">
-                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 95.5%; height: 100%; border-radius: 10px;"></div>
+                    <div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 99%; height: 100%; border-radius: 10px;"></div>
                 </div>
             </div>
         </div>
@@ -320,14 +320,7 @@ elif page == "🔍 Manual Prediction":
         col1, col2 = st.columns(2)
         
         with col1:
-            st.subheader("💳 Card & Transaction Info")
-            
-            # Credit card number
-            cc_num = st.text_input(
-                "Credit Card Number",
-                placeholder="e.g., 2703186189652095",
-                help="Enter the credit card number"
-            )
+            st.subheader("💳 Transaction Info")
             
             # Transaction amount
             amt = st.number_input(
@@ -383,15 +376,6 @@ elif page == "🔍 Manual Prediction":
                 "Job Title",
                 jobs,
                 help="Select customer job title"
-            )
-            
-            # ZIP code
-            zip_code = st.number_input(
-                "ZIP Code",
-                min_value=10000,
-                max_value=99999,
-                value=12345,
-                help="Enter customer ZIP code"
             )
             
             # Latitude
@@ -458,16 +442,14 @@ elif page == "🔍 Manual Prediction":
         )
         
         if submitted:
-            if cc_num and merchant:
+            if merchant:
                 try:
-                    # Create input data
+                    # Create input data with only the specified features
                     input_data = {
-                        'cc_num': int(cc_num),
                         'merchant': merchant,
                         'category': category,
                         'amt': amt,
                         'gender': gender,
-                        'zip': zip_code,
                         'lat': lat,
                         'long': long,
                         'city_pop': city_pop,
@@ -486,8 +468,9 @@ elif page == "🔍 Manual Prediction":
                     df_input['job'] = le_job.transform(df_input['job'])
                     df_input['merchant'] = le_merchant.transform(df_input['merchant'])
                     
-                    # Ensure correct column order
-                    df_input = df_input[feature_names]
+                    # Ensure correct column order (only the features we're using)
+                    required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+                    df_input = df_input[required_features]
                     
                     # Make prediction
                     with st.spinner("🔄 Analyzing transaction..."):
@@ -569,7 +552,7 @@ elif page == "🔍 Manual Prediction":
                     st.error(f"❌ Error processing transaction: {str(e)}")
                     st.info("Please check your input values and try again.")
             else:
-                st.warning("⚠️ Please fill in all required fields (Credit Card Number and Merchant Name).")
+                st.warning("⚠️ Please fill in the Merchant Name field.")
 
 elif page == "📊 Batch Analysis":
     st.markdown("""
@@ -637,12 +620,9 @@ elif page == "📊 Batch Analysis":
                 df['job'] = le_job.transform(df['job'])
                 df['merchant'] = le_merchant.transform(df['merchant'])
                 
-                # Drop unused columns
-                cols_to_drop = ['Unnamed: 0', 'trans_date_trans_time', 'first', 'last', 'street', 'city', 'state', 'dob', 'trans_num']
-                X_input = df.drop(cols_to_drop, axis=1)
-                
-                # Ensure same column order
-                X_input = X_input[feature_names]
+                # Use only the specified features
+                required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+                X_input = df[required_features]
                 
                 # Make predictions
                 probs = model.predict_proba(X_input)[:,1]
@@ -764,10 +744,10 @@ elif page == "⚙️ Settings":
         <h3 style="color: #667eea; margin-bottom: 1rem;">📋 Model Information</h3>
         <p><strong>Model Type:</strong> LightGBM Gradient Boosting</p>
         <p><strong>Training Date:</strong> December 2024</p>
-        <p><strong>Features:</strong> {len(feature_names)} engineered features</p>
+        <p><strong>Features Used:</strong> 11 selected features</p>
         <p><strong>Last Updated:</strong> {datetime.now().strftime("%B %d, %Y")}</p>
     </div>
-    """.format(len(feature_names)), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
     
     # Feature information
     st.markdown("""
@@ -777,12 +757,10 @@ elif page == "⚙️ Settings":
     """, unsafe_allow_html=True)
     
     feature_descriptions = {
-        'cc_num': 'Credit card number',
         'merchant': 'Merchant name',
         'category': 'Transaction category',
         'amt': 'Transaction amount',
         'gender': 'Customer gender',
-        'zip': 'Customer ZIP code',
         'lat': 'Customer latitude',
         'long': 'Customer longitude',
         'city_pop': 'City population',
@@ -792,9 +770,11 @@ elif page == "⚙️ Settings":
         'merch_long': 'Merchant longitude'
     }
     
+    required_features = ['merchant', 'category', 'amt', 'gender', 'lat', 'long', 'city_pop', 'job', 'unix_time', 'merch_lat', 'merch_long']
+    
     feature_df = pd.DataFrame([
         {'Feature': feat, 'Description': feature_descriptions.get(feat, 'N/A')}
-        for feat in feature_names
+        for feat in required_features
     ])
     
     st.table(feature_df)
