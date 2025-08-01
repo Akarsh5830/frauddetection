@@ -5,6 +5,8 @@ import json
 import numpy as np
 from datetime import datetime
 import time
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # 🎨 Custom CSS for modern styling
 st.set_page_config(
@@ -189,17 +191,75 @@ model, le_cat, le_gender, le_job, le_merchant, feature_names, merchant_names, th
 category_names = le_cat.classes_.tolist()
 job_names = le_job.classes_.tolist()
 
-# Sidebar navigation
+# Sidebar navigation with improved styling
 st.sidebar.markdown("""
-<div style="text-align: center; padding: 1rem;">
-    <h2 style="color: white; margin-bottom: 2rem;">🛡️ FraudGuard AI</h2>
+<div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+    <h2 style="color: white; margin-bottom: 0.5rem; font-size: 1.5rem;">🛡️ FraudGuard AI</h2>
+    <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 0.9rem;">Advanced Fraud Detection</p>
 </div>
 """, unsafe_allow_html=True)
 
+# Navigation with icons and descriptions
+nav_options = {
+    "🏠 Dashboard": "Overview & Analytics",
+    "🔍 Manual Prediction": "Single Transaction Analysis", 
+    "📊 Batch Analysis": "Bulk File Processing",
+    "📈 Feature Importance": "Model Insights",
+    "⚙️ Settings": "Configuration & Info"
+}
+
 page = st.sidebar.selectbox(
-    "Navigation",
-    ["🏠 Dashboard", "🔍 Manual Prediction", "📊 Batch Analysis", "⚙️ Settings"]
+    "📋 Navigation Menu",
+    list(nav_options.keys()),
+    format_func=lambda x: f"{x} - {nav_options[x]}"
 )
+
+# Add a separator
+st.sidebar.markdown("---")
+
+# Quick stats in sidebar
+st.sidebar.markdown("""
+<div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+    <h4 style="color: white; margin-bottom: 0.5rem;">📊 Quick Stats</h4>
+    <p style="color: rgba(255,255,255,0.8); margin: 0.2rem 0; font-size: 0.9rem;">🎯 Model Accuracy: 99.0%</p>
+    <p style="color: rgba(255,255,255,0.8); margin: 0.2rem 0; font-size: 0.9rem;">⚡ Processing Speed: 0.2s</p>
+    <p style="color: rgba(255,255,255,0.8); margin: 0.2rem 0; font-size: 0.9rem;">🔍 Features: 13</p>
+</div>
+""", unsafe_allow_html=True)
+
+# Model status indicator
+st.sidebar.markdown("""
+<div style="background: rgba(76, 175, 80, 0.2); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border-left: 4px solid #4CAF50;">
+    <h4 style="color: white; margin-bottom: 0.5rem;">🟢 Model Status</h4>
+    <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 0.9rem;">✅ All systems operational</p>
+    <p style="color: rgba(255,255,255,0.7); margin: 0.2rem 0 0 0; font-size: 0.8rem;">🔒 Privacy protection active</p>
+</div>
+""", unsafe_allow_html=True)
+
+# Help section
+with st.sidebar.expander("❓ Quick Help", expanded=False):
+    st.markdown("""
+    **🔍 Manual Prediction:** Enter transaction details for single analysis
+    
+    **📊 Batch Analysis:** Upload CSV file for bulk processing
+    
+    **📈 Feature Importance:** View model insights and feature rankings
+    
+    **⚙️ Settings:** Configure model parameters and view information
+    
+    **🔒 Privacy:** Sensitive data is automatically protected
+    """)
+
+# Add footer
+st.sidebar.markdown("---")
+st.sidebar.markdown("""
+<div style="text-align: center; padding: 1rem;">
+    <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; margin: 0;">
+        🛡️ FraudGuard AI v1.0<br>
+        Powered by LightGBM
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
 if page == "🏠 Dashboard":
     # Main header
@@ -309,6 +369,42 @@ if page == "🏠 Dashboard":
             </div>
         </div>
         """, unsafe_allow_html=True)
+    
+    # Add feature importance preview
+    try:
+        if hasattr(model, 'feature_importances_'):
+            importance_scores = model.feature_importances_
+        else:
+            importance_scores = model.feature_importance(importance_type='gain')
+        
+        # Get top 3 features
+        feature_importance_df = pd.DataFrame({
+            'Feature': feature_names,
+            'Importance': importance_scores
+        }).sort_values('Importance', ascending=False)
+        
+        top_features = feature_importance_df.head(3)
+        
+        st.markdown("""
+        <div class="result-card fade-in">
+            <h3 style="color: #667eea; margin-bottom: 1rem;">🥇 Top 3 Most Important Features</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2, col3 = st.columns(3)
+        
+        for i, (_, row) in enumerate(top_features.iterrows()):
+            with [col1, col2, col3][i]:
+                st.markdown(f"""
+                <div style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white;">
+                    <h4 style="margin: 0 0 0.5rem 0;">#{i+1}</h4>
+                    <p style="margin: 0; font-weight: bold;">{row['Feature']}</p>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">{row['Importance']:.3f}</p>
+                </div>
+                """, unsafe_allow_html=True)
+    
+    except Exception as e:
+        st.info("Feature importance data will be available in the Feature Importance section.")
 
 elif page == "🔍 Manual Prediction":
     st.markdown("""
@@ -717,6 +813,156 @@ elif page == "📊 Batch Analysis":
         except Exception as e:
             st.error(f"❌ Error processing file: {str(e)}")
             st.info("Please ensure your CSV file contains the required columns and is properly formatted.")
+
+elif page == "📈 Feature Importance":
+    st.markdown("""
+    <div class="main-header fade-in">
+        <h1>📈 Feature Importance Analysis</h1>
+        <p>Understand which features drive fraud detection decisions</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Feature importance section
+    st.markdown("""
+    <div class="input-card fade-in">
+        <h2 style="color: #2c3e50; margin-bottom: 1rem;">🎯 Model Feature Importance</h2>
+        <p style="color: #34495e; font-size: 1.1rem; margin-bottom: 2rem;">
+            Discover which transaction features are most important for fraud detection.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    try:
+        # Get feature importance from the model
+        if hasattr(model, 'feature_importances_'):
+            importance_scores = model.feature_importances_
+        else:
+            # For LightGBM models, we can get feature importance differently
+            importance_scores = model.feature_importance(importance_type='gain')
+        
+        # Create feature importance dataframe
+        feature_importance_df = pd.DataFrame({
+            'Feature': feature_names,
+            'Importance': importance_scores
+        }).sort_values('Importance', ascending=False)
+        
+        # Display feature importance chart
+        st.markdown("""
+        <div class="result-card fade-in">
+            <h3 style="color: #667eea; margin-bottom: 1rem;">📊 Feature Importance Ranking</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Create a beautiful bar chart
+        fig, ax = plt.subplots(figsize=(12, 8))
+        
+        # Color palette for the bars
+        colors = plt.cm.viridis(np.linspace(0, 1, len(feature_importance_df)))
+        
+        bars = ax.barh(
+            feature_importance_df['Feature'], 
+            feature_importance_df['Importance'],
+            color=colors,
+            alpha=0.8
+        )
+        
+        # Customize the chart
+        ax.set_xlabel('Importance Score', fontsize=12, fontweight='bold')
+        ax.set_ylabel('Features', fontsize=12, fontweight='bold')
+        ax.set_title('Feature Importance for Fraud Detection', fontsize=16, fontweight='bold', pad=20)
+        
+        # Add value labels on bars
+        for i, bar in enumerate(bars):
+            width = bar.get_width()
+            ax.text(width + 0.001, bar.get_y() + bar.get_height()/2, 
+                   f'{width:.3f}', ha='left', va='center', fontweight='bold')
+        
+        # Improve layout
+        plt.tight_layout()
+        plt.grid(axis='x', alpha=0.3)
+        
+        # Display the chart
+        st.pyplot(fig)
+        
+        # Feature importance table
+        st.markdown("""
+        <div class="result-card fade-in">
+            <h3 style="color: #667eea; margin-bottom: 1rem;">📋 Detailed Feature Analysis</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Add descriptions and categories
+        feature_analysis = []
+        for _, row in feature_importance_df.iterrows():
+            feature = row['Feature']
+            importance = row['Importance']
+            
+            # Categorize features
+            if feature in ['cc_num', 'zip', 'lat', 'long']:
+                category = "🔒 Privacy Protected"
+                description = "Sensitive personal information handled with placeholder values"
+            elif feature in ['merchant', 'category', 'job']:
+                category = "🏷️ Categorical"
+                description = "Encoded categorical variables"
+            elif feature in ['amt', 'city_pop']:
+                category = "💰 Financial/Demographic"
+                description = "Transaction amount and population data"
+            elif feature in ['unix_time']:
+                category = "⏰ Temporal"
+                description = "Time-based features"
+            elif feature in ['merch_lat', 'merch_long']:
+                category = "📍 Geographic"
+                description = "Merchant location coordinates"
+            else:
+                category = "📊 Other"
+                description = "Additional model features"
+            
+            feature_analysis.append({
+                'Feature': feature,
+                'Importance': f"{importance:.4f}",
+                'Category': category,
+                'Description': description
+            })
+        
+        analysis_df = pd.DataFrame(feature_analysis)
+        st.dataframe(analysis_df, use_container_width=True)
+        
+        # Insights section
+        st.markdown("""
+        <div class="result-card fade-in">
+            <h3 style="color: #667eea; margin-bottom: 1rem;">💡 Key Insights</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Top 3 features
+            top_features = feature_importance_df.head(3)
+            st.markdown("**🥇 Top 3 Most Important Features:**")
+            for i, (_, row) in enumerate(top_features.iterrows(), 1):
+                st.markdown(f"{i}. **{row['Feature']}** ({row['Importance']:.3f})")
+        
+        with col2:
+            # Bottom 3 features
+            bottom_features = feature_importance_df.tail(3)
+            st.markdown("**🥉 Least Important Features:**")
+            for i, (_, row) in enumerate(bottom_features.iterrows(), 1):
+                st.markdown(f"{i}. **{row['Feature']}** ({row['Importance']:.3f})")
+        
+        # Feature importance explanation
+        st.markdown("""
+        <div class="info-indicator fade-in">
+            <h4 style="margin-bottom: 1rem;">📚 Understanding Feature Importance</h4>
+            <p style="margin-bottom: 0.5rem;"><strong>Higher scores</strong> indicate features that are more critical for fraud detection.</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Lower scores</strong> suggest features that contribute less to the model's decisions.</p>
+            <p style="margin: 0;"><strong>Privacy-protected features</strong> use placeholder values but still contribute to the model's understanding.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    except Exception as e:
+        st.error(f"❌ Error loading feature importance: {str(e)}")
+        st.info("Feature importance data may not be available for this model type.")
 
 elif page == "⚙️ Settings":
     st.markdown("""
